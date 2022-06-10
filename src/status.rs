@@ -1,9 +1,9 @@
-use osqp_sys as ffi;
+use osqp2_sys as ffi;
 use std::fmt;
 use std::slice;
 use std::time::Duration;
 
-use {float, Problem};
+use crate::{float, Problem};
 
 /// The result of solving a problem.
 #[derive(Clone, Debug)]
@@ -62,23 +62,23 @@ impl<'a> Status<'a> {
         use std::os::raw::c_int;
         unsafe {
             match (*(*prob.workspace).info).status_val as c_int {
-                ffi::OSQP_SOLVED => Status::Solved(Solution { prob }),
-                ffi::OSQP_SOLVED_INACCURATE => Status::SolvedInaccurate(Solution { prob }),
-                ffi::OSQP_MAX_ITER_REACHED => Status::MaxIterationsReached(Solution { prob }),
-                ffi::OSQP_TIME_LIMIT_REACHED => Status::TimeLimitReached(Solution { prob }),
-                ffi::OSQP_PRIMAL_INFEASIBLE => {
+                ffi::src::src::auxil::OSQP_SOLVED => Status::Solved(Solution { prob }),
+                ffi::src::src::auxil::OSQP_SOLVED_INACCURATE => Status::SolvedInaccurate(Solution { prob }),
+                ffi::src::src::auxil::OSQP_MAX_ITER_REACHED => Status::MaxIterationsReached(Solution { prob }),
+                ffi::src::src::auxil::OSQP_TIME_LIMIT_REACHED => Status::TimeLimitReached(Solution { prob }),
+                ffi::src::src::auxil::OSQP_PRIMAL_INFEASIBLE => {
                     Status::PrimalInfeasible(PrimalInfeasibilityCertificate { prob })
                 }
-                ffi::OSQP_PRIMAL_INFEASIBLE_INACCURATE => {
+                ffi::src::src::auxil::OSQP_PRIMAL_INFEASIBLE_INACCURATE => {
                     Status::PrimalInfeasibleInaccurate(PrimalInfeasibilityCertificate { prob })
                 }
-                ffi::OSQP_DUAL_INFEASIBLE => {
+                ffi::src::src::auxil::OSQP_DUAL_INFEASIBLE => {
                     Status::DualInfeasible(DualInfeasibilityCertificate { prob })
                 }
-                ffi::OSQP_DUAL_INFEASIBLE_INACCURATE => {
+                ffi::src::src::auxil::OSQP_DUAL_INFEASIBLE_INACCURATE => {
                     Status::DualInfeasibleInaccurate(DualInfeasibilityCertificate { prob })
                 }
-                ffi::OSQP_NON_CVX => Status::NonConvex(Failure { prob }),
+                ffi::src::src::auxil::OSQP_NON_CVX => Status::NonConvex(Failure { prob }),
                 _ => unreachable!(),
             }
         }

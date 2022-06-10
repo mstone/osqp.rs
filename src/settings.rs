@@ -1,9 +1,9 @@
-use osqp_sys as ffi;
+use osqp2_sys as ffi;
 use std::mem;
 use std::ptr;
 use std::time::Duration;
 
-use {float, Problem};
+use crate::{float, Problem};
 
 /// The linear system solver for OSQP to use.
 #[derive(Clone, Debug, PartialEq)]
@@ -19,11 +19,11 @@ macro_rules! u32_to_osqp_int {
     ($name:ident, $value:expr) => {{
         let value = $value;
         assert!(
-            value as u64 <= ffi::osqp_int::max_value() as u64,
+            value as u64 <= ffi::src::src::osqp::c_int::max_value() as u64,
             "{} must be smaller than the largest isize value",
             stringify!($name)
         );
-        value as ffi::osqp_int
+        value as ffi::src::src::osqp::c_int
     }};
 }
 
@@ -40,11 +40,11 @@ macro_rules! convert_rust_type {
     ($name:ident, float, $value:expr) => ($value);
     ($name:ident, u32, $value:expr) => (u32_to_osqp_int!($name, $value));
     ($name:ident, option_u32, $value:expr) => (u32_to_osqp_int!($name, $value.unwrap_or(0)));
-    ($name:ident, bool, $value:expr) => ($value as ffi::osqp_int);
+    ($name:ident, bool, $value:expr) => ($value as ffi::src::src::osqp::c_int);
     ($name:ident, linsys_solver, $value:expr) => (
         match $value {
-            LinsysSolver::Qdldl => ffi::QDLDL_SOLVER,
-            LinsysSolver::MklPardiso => ffi::MKL_PARDISO_SOLVER,
+            LinsysSolver::Qdldl => ffi::src::src::osqp::QDLDL_SOLVER,
+            LinsysSolver::MklPardiso => ffi::src::src::osqp::MKL_PARDISO_SOLVER,
             LinsysSolver::__Nonexhaustive => unreachable!(),
         }
     );
@@ -67,7 +67,7 @@ macro_rules! settings {
     )*) => (
         /// The settings used when initialising a solver.
         pub struct Settings {
-            pub(crate) inner: ffi::OSQPSettings,
+            pub(crate) inner: ffi::src::src::osqp::OSQPSettings,
         }
 
         impl Settings {
@@ -95,8 +95,8 @@ macro_rules! settings {
         impl Default for Settings {
             fn default() -> Settings {
                 unsafe {
-                    let mut settings: ffi::OSQPSettings = mem::zeroed();
-                    ffi::osqp_set_default_settings(&mut settings);
+                    let mut settings: ffi::src::src::osqp::OSQPSettings = mem::zeroed();
+                    ffi::src::src::osqp::osqp_set_default_settings(&mut settings);
                     Settings {
                         inner: settings
                     }
@@ -112,7 +112,7 @@ macro_rules! settings {
                 #[$doc]
                 pub fn $update_name(&mut self, value: rust_type!($typ)) {
                     unsafe {
-                        let ret = ffi::$update_ffi(
+                        let ret = ffi::src::src::osqp::$update_ffi(
                             self.workspace,
                             convert_rust_type!($name, $typ, value)
                         );

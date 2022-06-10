@@ -1,50 +1,20 @@
-#!/bin/bash
-
-bindgen bindings.h -o src/bindings.rs \
---distrust-clang-mangling \
---no-layout-tests \
---no-recursive-whitelist \
---no-prepend-enum-name \
---raw-line "use {c_float, c_int, OSQPTimer};" \
---whitelist-type csc \
---whitelist-type LinSysSolver \
---whitelist-type OSQPScaling \
---whitelist-type OSQPSolution \
---whitelist-type OSQPInfo \
---whitelist-type OSQPPolish \
---whitelist-type OSQPData \
---whitelist-type OSQPSettings \
---whitelist-type OSQPWorkspace \
---whitelist-type linsys_solver \
---whitelist-type linsys_solver_type \
---whitelist-type osqp_error_type \
---whitelist-type ffi_osqp_solve_status \
---whitelist-function osqp_setup \
---whitelist-function osqp_solve \
---whitelist-function osqp_cleanup \
---whitelist-function osqp_update_lin_cost \
---whitelist-function osqp_update_bounds \
---whitelist-function osqp_update_lower_bound \
---whitelist-function osqp_update_upper_bound \
---whitelist-function osqp_warm_start \
---whitelist-function osqp_warm_start_x \
---whitelist-function osqp_warm_start_y \
---whitelist-function osqp_update_P \
---whitelist-function osqp_update_A \
---whitelist-function osqp_update_P_A \
---whitelist-function osqp_update_rho \
---whitelist-function osqp_update_max_iter \
---whitelist-function osqp_update_eps_abs \
---whitelist-function osqp_update_eps_rel \
---whitelist-function osqp_update_eps_prim_inf \
---whitelist-function osqp_update_eps_dual_inf \
---whitelist-function osqp_update_alpha \
---whitelist-function osqp_update_warm_start \
---whitelist-function osqp_update_scaled_termination \
---whitelist-function osqp_update_check_termination \
---whitelist-function osqp_update_delta \
---whitelist-function osqp_update_polish \
---whitelist-function osqp_update_polish_refine_iter \
---whitelist-function osqp_update_verbose \
---whitelist-function osqp_update_time_limit \
---whitelist-function osqp_set_default_settings \
+#!/bin/sh
+git submodule init
+git submodule update --recursive
+srcdir=$(pwd)
+mkdir build
+cd build
+cmake ../osqp -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCTRLC=OFF -DDFLOAT=OFF -DDLONG=ON
+c2rust transpile --overwrite-existing --fail-on-error --translate-const-macros -b osqp_demo -b example -o osqp  compile_commands.json -- -D_POSIX_C_SOURCE
+pwd
+rsync -Pai osqp/. ../.
+cd "$srcdir"
+sed -i -e '1,3d' Cargo.toml
+sed -i -e 's/"osqp"/"osqp2-sys"/g' Cargo.toml
+sed -i -e '3,$s/"osqp2-sys"/"osqp2_sys"/g' Cargo.toml
+sed -i -e 's/0.0.0/0.6.2/g' Cargo.toml
+sed -i -e 's/C2Rust/Michael Stone <michael.r.stone@gmail.com>/g' Cargo.toml
+sed -i -e 's/use ::osqp::\*;/use ::osqp2_sys::*;/' src/examples/osqp_demo.rs
+sed -i -e 's/use ::osqp::\*;/use ::osqp2_sys::*;/' src/lin_sys/direct/qdldl/qdldl_sources/examples/example.rs
+(cd build/osqp; for f in $(find . -type f -print); do echo git add "$srcdir/$f"; git add "$srcdir/$f"; done)
+rm -rf build

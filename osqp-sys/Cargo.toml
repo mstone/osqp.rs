@@ -1,16 +1,20 @@
 [package]
-name = "osqp-sys"
+name = "osqp2-sys"
+authors = ["Michael Stone <michael.r.stone@gmail.com>"]
 version = "0.6.2"
-description = "FFI bindings to the OSQP (Operator Splitting Quadratic Program) solver."
-authors = ["Edward Barnard <eabarnard@gmail.com>"]
-license = "Apache-2.0"
-homepage = "https://osqp.org/"
-repository = "https://github.com/oxfordcontrol/osqp.rs/"
-documentation = "https://docs.rs/osqp-sys/0.6.2/"
-categories = ["external-ffi-bindings"]
-links = "osqp"
+publish = false
+edition = "2021"
+autobins = false
 
-[build-dependencies]
-cc = "1.0.36"
-cmake = "0.1.28"
-fs_extra = "1.2.0"
+[lib]
+name = "osqp2_sys"
+path = "lib.rs"
+crate-type = ["staticlib", "rlib"]
+[[bin]]
+path = "src/examples/osqp_demo.rs"
+name = "osqp_demo"
+[[bin]]
+path = "src/lin_sys/direct/qdldl/qdldl_sources/examples/example.rs"
+name = "example"
+[dependencies]
+libc= "0.2"

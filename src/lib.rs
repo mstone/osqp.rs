@@ -30,7 +30,7 @@
 //! </div>
 //!
 //! ```rust
-//! use osqp::{CscMatrix, Problem, Settings};
+//! use osqp2::{CscMatrix, Problem, Settings};
 //!
 //! // Define problem data
 //! let P = &[[4.0, 1.0],
@@ -66,9 +66,9 @@
 //! # assert!(expected.iter().zip(x).all(|(&a, &b)| (a - b).abs() < 1e-9));
 //! ```
 
-extern crate osqp_sys;
+extern crate osqp2_sys;
 
-use osqp_sys as ffi;
+use osqp2_sys as ffi;
 use std::error::Error;
 use std::fmt;
 use std::ptr;
@@ -88,12 +88,6 @@ pub use status::{
 #[allow(non_camel_case_types)]
 type float = f64;
 
-// Ensure osqp_int is the same size as usize/isize.
-#[allow(dead_code)]
-fn assert_osqp_int_size() {
-    let _osqp_int_must_be_usize = ::std::mem::transmute::<ffi::osqp_int, usize>;
-}
-
 macro_rules! check {
     ($fun:ident, $ret:expr) => {
         assert!(
@@ -107,7 +101,7 @@ macro_rules! check {
 
 /// An instance of the OSQP solver.
 pub struct Problem {
-    workspace: *mut ffi::OSQPWorkspace,
+    workspace: *mut ffi::src::src::osqp::OSQPWorkspace,
     /// Number of variables
     n: usize,
     /// Number of constraints
@@ -189,9 +183,9 @@ impl Problem {
             let mut P_ffi = P.to_ffi();
             let mut A_ffi = A.to_ffi();
 
-            let data = ffi::OSQPData {
-                n: n as ffi::osqp_int,
-                m: m as ffi::osqp_int,
+            let data = ffi::src::src::osqp::OSQPData {
+                n: n as ffi::src::src::osqp::c_int,
+                m: m as ffi::src::src::osqp::c_int,
                 P: &mut P_ffi,
                 A: &mut A_ffi,
                 q: q.as_ptr() as *mut float,
@@ -199,24 +193,24 @@ impl Problem {
                 u: u.as_ptr() as *mut float,
             };
 
-            let settings = &settings.inner as *const ffi::OSQPSettings as *mut ffi::OSQPSettings;
-            let mut workspace: *mut ffi::OSQPWorkspace = ptr::null_mut();
+            let settings = &settings.inner as *const ffi::src::src::osqp::OSQPSettings as *mut ffi::src::src::osqp::OSQPSettings;
+            let mut workspace: *mut ffi::src::src::osqp::OSQPWorkspace = ptr::null_mut();
 
-            let status = ffi::osqp_setup(&mut workspace, &data, settings);
-            let err = match status as ffi::osqp_error_type {
+            let status = ffi::src::src::osqp::osqp_setup(&mut workspace, &data, settings);
+            let err = match status as ffi::src::src::osqp::osqp_error_type {
                 0 => return Ok(Problem { workspace, n, m }),
-                ffi::OSQP_DATA_VALIDATION_ERROR => SetupError::DataInvalid(""),
-                ffi::OSQP_SETTINGS_VALIDATION_ERROR => SetupError::SettingsInvalid,
-                ffi::OSQP_LINSYS_SOLVER_LOAD_ERROR => SetupError::LinsysSolverLoadFailed,
-                ffi::OSQP_LINSYS_SOLVER_INIT_ERROR => SetupError::LinsysSolverInitFailed,
-                ffi::OSQP_NONCVX_ERROR => SetupError::NonConvex,
-                ffi::OSQP_MEM_ALLOC_ERROR => SetupError::MemoryAllocationFailed,
+                ffi::src::src::osqp::OSQP_DATA_VALIDATION_ERROR => SetupError::DataInvalid(""),
+                ffi::src::src::osqp::OSQP_SETTINGS_VALIDATION_ERROR => SetupError::SettingsInvalid,
+                ffi::src::src::osqp::OSQP_LINSYS_SOLVER_LOAD_ERROR => SetupError::LinsysSolverLoadFailed,
+                ffi::src::src::osqp::OSQP_LINSYS_SOLVER_INIT_ERROR => SetupError::LinsysSolverInitFailed,
+                ffi::src::src::osqp::OSQP_NONCVX_ERROR => SetupError::NonConvex,
+                ffi::src::src::osqp::OSQP_MEM_ALLOC_ERROR => SetupError::MemoryAllocationFailed,
                 _ => unreachable!(),
             };
 
             // If the call to `osqp_setup` fails the `OSQPWorkspace` may be partially allocated
             if !workspace.is_null() {
-                ffi::osqp_cleanup(workspace);
+                ffi::src::src::osqp::osqp_cleanup(workspace);
             }
             Err(err)
         }
@@ -230,7 +224,7 @@ impl Problem {
             assert_eq!(self.n, q.len());
             check!(
                 update_lin_cost,
-                ffi::osqp_update_lin_cost(self.workspace, q.as_ptr())
+                ffi::src::src::osqp::osqp_update_lin_cost(self.workspace, q.as_ptr())
             );
         }
     }
@@ -244,7 +238,7 @@ impl Problem {
             assert_eq!(self.m, u.len());
             check!(
                 update_bounds,
-                ffi::osqp_update_bounds(self.workspace, l.as_ptr(), u.as_ptr())
+                ffi::src::src::osqp::osqp_update_bounds(self.workspace, l.as_ptr(), u.as_ptr())
             );
         }
     }
@@ -257,7 +251,7 @@ impl Problem {
             assert_eq!(self.m, l.len());
             check!(
                 update_lower_bound,
-                ffi::osqp_update_lower_bound(self.workspace, l.as_ptr())
+                ffi::src::src::osqp::osqp_update_lower_bound(self.workspace, l.as_ptr())
             );
         }
     }
@@ -270,7 +264,7 @@ impl Problem {
             assert_eq!(self.m, u.len());
             check!(
                 update_upper_bound,
-                ffi::osqp_update_upper_bound(self.workspace, u.as_ptr())
+                ffi::src::src::osqp::osqp_update_upper_bound(self.workspace, u.as_ptr())
             );
         }
     }
@@ -285,7 +279,7 @@ impl Problem {
             assert_eq!(self.m, y.len());
             check!(
                 warm_start,
-                ffi::osqp_warm_start(self.workspace, x.as_ptr(), y.as_ptr())
+                ffi::src::src::osqp::osqp_warm_start(self.workspace, x.as_ptr(), y.as_ptr())
             );
         }
     }
@@ -298,7 +292,7 @@ impl Problem {
             assert_eq!(self.n, x.len());
             check!(
                 warm_start_x,
-                ffi::osqp_warm_start_x(self.workspace, x.as_ptr())
+                ffi::src::src::osqp::osqp_warm_start_x(self.workspace, x.as_ptr())
             );
         }
     }
@@ -311,7 +305,7 @@ impl Problem {
             assert_eq!(self.m, y.len());
             check!(
                 warm_start_y,
-                ffi::osqp_warm_start_y(self.workspace, y.as_ptr())
+                ffi::src::src::osqp::osqp_warm_start_y(self.workspace, y.as_ptr())
             );
         }
     }
@@ -333,11 +327,11 @@ impl Problem {
 
             check!(
                 update_P,
-                ffi::osqp_update_P(
+                ffi::src::src::osqp::osqp_update_P(
                     self.workspace,
                     P.data.as_ptr(),
                     ptr::null(),
-                    P.data.len() as ffi::osqp_int,
+                    P.data.len() as ffi::src::src::osqp::c_int,
                 )
             );
         }
@@ -360,11 +354,11 @@ impl Problem {
 
             check!(
                 update_A,
-                ffi::osqp_update_A(
+                ffi::src::src::osqp::osqp_update_A(
                     self.workspace,
                     A.data.as_ptr(),
                     ptr::null(),
-                    A.data.len() as ffi::osqp_int,
+                    A.data.len() as ffi::src::src::osqp::c_int,
                 )
             );
         }
@@ -394,14 +388,14 @@ impl Problem {
 
             check!(
                 update_P_A,
-                ffi::osqp_update_P_A(
+                ffi::src::src::osqp::osqp_update_P_A(
                     self.workspace,
                     P.data.as_ptr(),
                     ptr::null(),
-                    P.data.len() as ffi::osqp_int,
+                    P.data.len() as ffi::src::src::osqp::c_int,
                     A.data.as_ptr(),
                     ptr::null(),
-                    A.data.len() as ffi::osqp_int,
+                    A.data.len() as ffi::src::src::osqp::c_int,
                 )
             );
         }
@@ -410,7 +404,7 @@ impl Problem {
     /// Attempts to solve the quadratic program.
     pub fn solve<'a>(&'a mut self) -> Status<'a> {
         unsafe {
-            check!(solve, ffi::osqp_solve(self.workspace));
+            check!(solve, ffi::src::src::osqp::osqp_solve(self.workspace));
             Status::from_problem(self)
         }
     }
@@ -419,7 +413,7 @@ impl Problem {
 impl Drop for Problem {
     fn drop(&mut self) {
         unsafe {
-            ffi::osqp_cleanup(self.workspace);
+            ffi::src::src::osqp::osqp_cleanup(self.workspace);
         }
     }
 }
