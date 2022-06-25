@@ -1,4 +1,4 @@
-use osqp2_sys as ffi;
+use osqp_rust_sys as ffi;
 use std::borrow::Cow;
 use std::iter;
 use std::slice;

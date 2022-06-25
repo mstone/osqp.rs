@@ -1,5 +1,5 @@
 [package]
-name = "osqp2"
+name = "osqp-rust"
 version = "0.6.2"
 description = "The OSQP (Operator Splitting Quadratic Program) solver."
 authors = ["Edward Barnard <eabarnard@gmail.com>", "Michael Stone <michael.r.stone@gmail.com>"]
@@ -7,12 +7,12 @@ license = "Apache-2.0"
 readme = "README.md"
 homepage = "https://osqp.org/"
 repository = "https://github.com/mstone/osqp.rs/"
-documentation = "https://docs.rs/osqp2/0.6.2/"
+documentation = "https://docs.rs/osqp-rust/0.6.2/"
 keywords = ["optimisation", "optimization", "programming", "quadratic", "linear"]
 edition = "2021"
 
 [workspace]
 
 [dependencies]
-osqp2-sys = { version = "0.6.2", path = "./osqp-sys" }
+osqp-rust-sys = { version = "0.6.2", path = "./osqp-rust-sys" }
 libc = "*"

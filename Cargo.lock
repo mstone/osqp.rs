@@ -9,15 +9,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "349d5a591cd28b49e1d1037471617a32ddcda5731b99419008085f72d5a53836"
 
 [[package]]
-name = "osqp2"
+name = "osqp-rust"
 version = "0.6.2"
 dependencies = [
  "libc",
- "osqp2-sys",
+ "osqp-rust-sys",
 ]
 
 [[package]]
-name = "osqp2-sys"
+name = "osqp-rust-sys"
 version = "0.6.2"
 dependencies = [
  "libc",

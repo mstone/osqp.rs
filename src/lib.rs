@@ -30,7 +30,7 @@
 //! </div>
 //!
 //! ```rust
-//! use osqp2::{CscMatrix, Problem, Settings};
+//! use osqp_rust::{CscMatrix, Problem, Settings};
 //!
 //! // Define problem data
 //! let P = &[[4.0, 1.0],
@@ -66,9 +66,9 @@
 //! # assert!(expected.iter().zip(x).all(|(&a, &b)| (a - b).abs() < 1e-9));
 //! ```
 
-extern crate osqp2_sys;
+extern crate osqp_rust_sys;
 
-use osqp2_sys as ffi;
+use osqp_rust_sys as ffi;
 use std::error::Error;
 use std::fmt;
 use std::ptr;

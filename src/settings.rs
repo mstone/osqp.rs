@@ -1,4 +1,4 @@
-use osqp2_sys as ffi;
+use osqp_rust_sys as ffi;
 use std::mem;
 use std::ptr;
 use std::time::Duration;

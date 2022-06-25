@@ -1,5 +1,5 @@
 [package]
-name = "osqp2-sys"
+name = "osqp-rust-sys"
 authors = ["Michael Stone <michael.r.stone@gmail.com>"]
 version = "0.6.2"
 publish = false
@@ -7,7 +7,7 @@ edition = "2021"
 autobins = false
 
 [lib]
-name = "osqp2_sys"
+name = "osqp_rust_sys"
 path = "lib.rs"
 crate-type = ["staticlib", "rlib"]
 [[bin]]

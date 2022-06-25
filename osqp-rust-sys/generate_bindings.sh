@@ -10,11 +10,11 @@ pwd
 rsync -Pai osqp/. ../.
 cd "$srcdir"
 sed -i -e '1,3d' Cargo.toml
-sed -i -e 's/"osqp"/"osqp2-sys"/g' Cargo.toml
-sed -i -e '3,$s/"osqp2-sys"/"osqp2_sys"/g' Cargo.toml
+sed -i -e 's/"osqp"/"osqp-rust-sys"/g' Cargo.toml
+sed -i -e '3,$s/"osqp-rust-sys"/"osqp_rust_sys"/g' Cargo.toml
 sed -i -e 's/0.0.0/0.6.2/g' Cargo.toml
 sed -i -e 's/C2Rust/Michael Stone <michael.r.stone@gmail.com>/g' Cargo.toml
-sed -i -e 's/use ::osqp::\*;/use ::osqp2_sys::*;/' src/examples/osqp_demo.rs
-sed -i -e 's/use ::osqp::\*;/use ::osqp2_sys::*;/' src/lin_sys/direct/qdldl/qdldl_sources/examples/example.rs
+sed -i -e 's/use ::osqp::\*;/use ::osqp_rust_sys::*;/' src/examples/osqp_demo.rs
+sed -i -e 's/use ::osqp::\*;/use ::osqp_rust_sys::*;/' src/lin_sys/direct/qdldl/qdldl_sources/examples/example.rs
 (cd build/osqp; for f in $(find . -type f -print); do echo git add "$srcdir/$f"; git add "$srcdir/$f"; done)
 rm -rf build
