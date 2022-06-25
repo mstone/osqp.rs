@@ -17,4 +17,3 @@ name = "osqp_demo"
 path = "src/lin_sys/direct/qdldl/qdldl_sources/examples/example.rs"
 name = "example"
 [dependencies]
-libc= "0.2"

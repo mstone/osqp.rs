@@ -11,7 +11,6 @@
 #![register_tool(c2rust)]
 
 
-extern crate libc;
 pub mod src {
 pub mod lin_sys {
 pub mod direct {

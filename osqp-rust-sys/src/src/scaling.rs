@@ -1,4 +1,3 @@
-use ::libc;
 extern "C" {
     pub type OSQP_TIMER;
     fn vec_set_scalar(a: *mut c_float, sc: c_float, n: c_int);
@@ -16,9 +15,9 @@ extern "C" {
     fn mat_inf_norm_rows(M: *const csc, E: *mut c_float);
     fn mat_inf_norm_cols_sym_triu(M: *const csc, E: *mut c_float);
 }
-pub type c_int = libc::c_longlong;
-pub type c_float = libc::c_double;
-pub type linsys_solver_type = libc::c_uint;
+pub type c_int = ::std::os::raw::c_longlong;
+pub type c_float = ::std::os::raw::c_double;
+pub type linsys_solver_type = ::std::os::raw::c_uint;
 pub const MKL_PARDISO_SOLVER: linsys_solver_type = 1;
 pub const QDLDL_SOLVER: linsys_solver_type = 0;
 #[derive(Copy, Clone)]
@@ -68,7 +67,7 @@ pub struct OSQPSolution {
 #[repr(C)]
 pub struct OSQPInfo {
     pub iter: c_int,
-    pub status: [libc::c_char; 32],
+    pub status: [::std::os::raw::c_char; 32],
     pub status_val: c_int,
     pub status_polish: c_int,
     pub obj_val: c_float,
@@ -172,12 +171,12 @@ pub struct OSQPWorkspace {
     pub rho_update_from_solve: c_int,
     pub summary_printed: c_int,
 }
-pub const MIN_SCALING: libc::c_double = 1e-04f64;
-pub const MAX_SCALING: libc::c_double = 1e+04f64;
+pub const MIN_SCALING: ::std::os::raw::c_double = 1e-04f64;
+pub const MAX_SCALING: ::std::os::raw::c_double = 1e+04f64;
 #[no_mangle]
 pub unsafe extern "C" fn limit_scaling(mut D: *mut c_float, mut n: c_int) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *D
             .offset(
@@ -226,7 +225,7 @@ pub unsafe extern "C" fn scale_data(mut work: *mut OSQPWorkspace) -> c_int {
     vec_set_scalar((*(*work).scaling).Dinv, 1.0f64, (*(*work).data).n);
     vec_set_scalar((*(*work).scaling).E, 1.0f64, (*(*work).data).m);
     vec_set_scalar((*(*work).scaling).Einv, 1.0f64, (*(*work).data).m);
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < (*(*work).settings).scaling {
         compute_inf_norm_cols_KKT(
             (*(*work).data).P,
@@ -252,9 +251,9 @@ pub unsafe extern "C" fn scale_data(mut work: *mut OSQPWorkspace) -> c_int {
         mat_inf_norm_cols_sym_triu((*(*work).data).P, (*work).D_temp);
         c_temp = vec_mean((*work).D_temp, n);
         inf_norm_q = vec_norm_inf((*(*work).data).q, n);
-        limit_scaling(&mut inf_norm_q, 1 as libc::c_int as c_int);
+        limit_scaling(&mut inf_norm_q, 1 as ::std::os::raw::c_int as c_int);
         c_temp = if c_temp > inf_norm_q { c_temp } else { inf_norm_q };
-        limit_scaling(&mut c_temp, 1 as libc::c_int as c_int);
+        limit_scaling(&mut c_temp, 1 as ::std::os::raw::c_int as c_int);
         c_temp = 1.0f64 / c_temp;
         mat_mult_scalar((*(*work).data).P, c_temp);
         vec_mult_scalar((*(*work).data).q, c_temp, n);
@@ -277,7 +276,7 @@ pub unsafe extern "C" fn scale_data(mut work: *mut OSQPWorkspace) -> c_int {
         (*(*work).data).u,
         (*(*work).data).m,
     );
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn unscale_data(mut work: *mut OSQPWorkspace) -> c_int {
@@ -305,7 +304,7 @@ pub unsafe extern "C" fn unscale_data(mut work: *mut OSQPWorkspace) -> c_int {
         (*(*work).data).u,
         (*(*work).data).m,
     );
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn unscale_solution(mut work: *mut OSQPWorkspace) -> c_int {
@@ -322,5 +321,5 @@ pub unsafe extern "C" fn unscale_solution(mut work: *mut OSQPWorkspace) -> c_int
         (*(*work).data).m,
     );
     vec_mult_scalar((*(*work).solution).y, (*(*work).scaling).cinv, (*(*work).data).m);
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }

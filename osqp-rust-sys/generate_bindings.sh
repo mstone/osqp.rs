@@ -16,5 +16,8 @@ sed -i -e 's/0.0.0/0.6.2/g' Cargo.toml
 sed -i -e 's/C2Rust/Michael Stone <michael.r.stone@gmail.com>/g' Cargo.toml
 sed -i -e 's/use ::osqp::\*;/use ::osqp_rust_sys::*;/' src/examples/osqp_demo.rs
 sed -i -e 's/use ::osqp::\*;/use ::osqp_rust_sys::*;/' src/lin_sys/direct/qdldl/qdldl_sources/examples/example.rs
+find src -name '*.rs' -execdir sed -i -e 's/libc::/::std::os::raw::/g' -e '/::libc/d' -e 's/::std::os::raw::intptr_t/isize/g' {} +
+sed -i -e '/libc/d' Cargo.toml
+sed -i -e '/libc/d' lib.rs
 (cd build/osqp; for f in $(find . -type f -print); do echo git add "$srcdir/$f"; git add "$srcdir/$f"; done)
 rm -rf build

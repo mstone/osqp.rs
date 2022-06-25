@@ -3,8 +3,8 @@
 #![feature(register_tool)]
 use ::osqp_rust_sys::*;
 extern "C" {
-    fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
-    fn free(_: *mut libc::c_void);
+    fn malloc(_: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void;
+    fn free(_: *mut ::std::os::raw::c_void);
     fn csc_matrix(
         m: c_int,
         n: c_int,
@@ -22,9 +22,9 @@ extern "C" {
     fn osqp_solve(work: *mut OSQPWorkspace) -> c_int;
     fn osqp_cleanup(work: *mut OSQPWorkspace) -> c_int;
 }
-pub type c_int = libc::c_longlong;
-pub type c_float = libc::c_double;
-pub type linsys_solver_type = libc::c_uint;
+pub type c_int = ::std::os::raw::c_longlong;
+pub type c_float = ::std::os::raw::c_double;
+pub type linsys_solver_type = ::std::os::raw::c_uint;
 pub const MKL_PARDISO_SOLVER: linsys_solver_type = 1;
 pub const QDLDL_SOLVER: linsys_solver_type = 0;
 #[derive(Copy, Clone)]
@@ -67,8 +67,8 @@ pub struct mach_timebase_info {
     pub numer: uint32_t,
     pub denom: uint32_t,
 }
-pub type uint32_t = libc::c_uint;
-pub type uint64_t = libc::c_ulonglong;
+pub type uint32_t = ::std::os::raw::c_uint;
+pub type uint64_t = ::std::os::raw::c_ulonglong;
 pub type OSQPTimer = OSQP_TIMER;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -90,7 +90,7 @@ pub struct OSQPSolution {
 #[repr(C)]
 pub struct OSQPInfo {
     pub iter: c_int,
-    pub status: [libc::c_char; 32],
+    pub status: [::std::os::raw::c_char; 32],
     pub status_val: c_int,
     pub status_polish: c_int,
     pub obj_val: c_float,
@@ -194,49 +194,49 @@ pub struct OSQPWorkspace {
     pub rho_update_from_solve: c_int,
     pub summary_printed: c_int,
 }
-pub const c_free: unsafe extern "C" fn(*mut libc::c_void) -> () = free;
-pub const c_malloc: unsafe extern "C" fn(libc::c_ulong) -> *mut libc::c_void = malloc;
+pub const c_free: unsafe extern "C" fn(*mut ::std::os::raw::c_void) -> () = free;
+pub const c_malloc: unsafe extern "C" fn(::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void = malloc;
 unsafe fn main_0(
-    mut argc: libc::c_int,
-    mut argv: *mut *mut libc::c_char,
-) -> libc::c_int {
+    mut argc: ::std::os::raw::c_int,
+    mut argv: *mut *mut ::std::os::raw::c_char,
+) -> ::std::os::raw::c_int {
     let mut P_x: [c_float; 3] = [4.0f64, 1.0f64, 2.0f64];
-    let mut P_nnz: c_int = 3 as libc::c_int as c_int;
+    let mut P_nnz: c_int = 3 as ::std::os::raw::c_int as c_int;
     let mut P_i: [c_int; 3] = [
-        0 as libc::c_int as c_int,
-        0 as libc::c_int as c_int,
-        1 as libc::c_int as c_int,
+        0 as ::std::os::raw::c_int as c_int,
+        0 as ::std::os::raw::c_int as c_int,
+        1 as ::std::os::raw::c_int as c_int,
     ];
     let mut P_p: [c_int; 3] = [
-        0 as libc::c_int as c_int,
-        1 as libc::c_int as c_int,
-        3 as libc::c_int as c_int,
+        0 as ::std::os::raw::c_int as c_int,
+        1 as ::std::os::raw::c_int as c_int,
+        3 as ::std::os::raw::c_int as c_int,
     ];
     let mut q: [c_float; 2] = [1.0f64, 1.0f64];
     let mut A_x: [c_float; 4] = [1.0f64, 1.0f64, 1.0f64, 1.0f64];
-    let mut A_nnz: c_int = 4 as libc::c_int as c_int;
+    let mut A_nnz: c_int = 4 as ::std::os::raw::c_int as c_int;
     let mut A_i: [c_int; 4] = [
-        0 as libc::c_int as c_int,
-        1 as libc::c_int as c_int,
-        0 as libc::c_int as c_int,
-        2 as libc::c_int as c_int,
+        0 as ::std::os::raw::c_int as c_int,
+        1 as ::std::os::raw::c_int as c_int,
+        0 as ::std::os::raw::c_int as c_int,
+        2 as ::std::os::raw::c_int as c_int,
     ];
     let mut A_p: [c_int; 3] = [
-        0 as libc::c_int as c_int,
-        2 as libc::c_int as c_int,
-        4 as libc::c_int as c_int,
+        0 as ::std::os::raw::c_int as c_int,
+        2 as ::std::os::raw::c_int as c_int,
+        4 as ::std::os::raw::c_int as c_int,
     ];
     let mut l: [c_float; 3] = [1.0f64, 0.0f64, 0.0f64];
     let mut u: [c_float; 3] = [1.0f64, 0.7f64, 0.7f64];
-    let mut n: c_int = 2 as libc::c_int as c_int;
-    let mut m: c_int = 3 as libc::c_int as c_int;
-    let mut exitflag: c_int = 0 as libc::c_int as c_int;
+    let mut n: c_int = 2 as ::std::os::raw::c_int as c_int;
+    let mut m: c_int = 3 as ::std::os::raw::c_int as c_int;
+    let mut exitflag: c_int = 0 as ::std::os::raw::c_int as c_int;
     let mut work: *mut OSQPWorkspace = 0 as *mut OSQPWorkspace;
     let mut settings: *mut OSQPSettings = malloc(
-        ::std::mem::size_of::<OSQPSettings>() as libc::c_ulong,
+        ::std::mem::size_of::<OSQPSettings>() as ::std::os::raw::c_ulong,
     ) as *mut OSQPSettings;
     let mut data: *mut OSQPData = malloc(
-        ::std::mem::size_of::<OSQPData>() as libc::c_ulong,
+        ::std::mem::size_of::<OSQPData>() as ::std::os::raw::c_ulong,
     ) as *mut OSQPData;
     if !data.is_null() {
         (*data).n = n;
@@ -274,20 +274,20 @@ unsafe fn main_0(
     osqp_cleanup(work);
     if !data.is_null() {
         if !((*data).A).is_null() {
-            free((*data).A as *mut libc::c_void);
+            free((*data).A as *mut ::std::os::raw::c_void);
         }
         if !((*data).P).is_null() {
-            free((*data).P as *mut libc::c_void);
+            free((*data).P as *mut ::std::os::raw::c_void);
         }
-        free(data as *mut libc::c_void);
+        free(data as *mut ::std::os::raw::c_void);
     }
     if !settings.is_null() {
-        free(settings as *mut libc::c_void);
+        free(settings as *mut ::std::os::raw::c_void);
     }
-    return exitflag as libc::c_int;
+    return exitflag as ::std::os::raw::c_int;
 }
 pub fn main() {
-    let mut args: Vec::<*mut libc::c_char> = Vec::new();
+    let mut args: Vec::<*mut ::std::os::raw::c_char> = Vec::new();
     for arg in ::std::env::args() {
         args.push(
             (::std::ffi::CString::new(arg))
@@ -299,8 +299,8 @@ pub fn main() {
     unsafe {
         ::std::process::exit(
             main_0(
-                (args.len() - 1) as libc::c_int,
-                args.as_mut_ptr() as *mut *mut libc::c_char,
+                (args.len() - 1) as ::std::os::raw::c_int,
+                args.as_mut_ptr() as *mut *mut ::std::os::raw::c_char,
             ) as i32,
         )
     }

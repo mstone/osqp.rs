@@ -1,75 +1,74 @@
-use ::libc;
 extern "C" {
     fn amd_l2(
-        n: libc::c_longlong,
-        Pe: *mut libc::c_longlong,
-        Iw: *mut libc::c_longlong,
-        Len: *mut libc::c_longlong,
-        iwlen: libc::c_longlong,
-        pfree: libc::c_longlong,
-        Nv: *mut libc::c_longlong,
-        Next: *mut libc::c_longlong,
-        Last: *mut libc::c_longlong,
-        Head: *mut libc::c_longlong,
-        Elen: *mut libc::c_longlong,
-        Degree: *mut libc::c_longlong,
-        W: *mut libc::c_longlong,
+        n: ::std::os::raw::c_longlong,
+        Pe: *mut ::std::os::raw::c_longlong,
+        Iw: *mut ::std::os::raw::c_longlong,
+        Len: *mut ::std::os::raw::c_longlong,
+        iwlen: ::std::os::raw::c_longlong,
+        pfree: ::std::os::raw::c_longlong,
+        Nv: *mut ::std::os::raw::c_longlong,
+        Next: *mut ::std::os::raw::c_longlong,
+        Last: *mut ::std::os::raw::c_longlong,
+        Head: *mut ::std::os::raw::c_longlong,
+        Elen: *mut ::std::os::raw::c_longlong,
+        Degree: *mut ::std::os::raw::c_longlong,
+        W: *mut ::std::os::raw::c_longlong,
         Control: *mut c_float,
         Info: *mut c_float,
     );
 }
-pub type c_float = libc::c_double;
+pub type c_float = ::std::os::raw::c_double;
 pub const AMD_2: unsafe extern "C" fn(
-    libc::c_longlong,
-    *mut libc::c_longlong,
-    *mut libc::c_longlong,
-    *mut libc::c_longlong,
-    libc::c_longlong,
-    libc::c_longlong,
-    *mut libc::c_longlong,
-    *mut libc::c_longlong,
-    *mut libc::c_longlong,
-    *mut libc::c_longlong,
-    *mut libc::c_longlong,
-    *mut libc::c_longlong,
-    *mut libc::c_longlong,
+    ::std::os::raw::c_longlong,
+    *mut ::std::os::raw::c_longlong,
+    *mut ::std::os::raw::c_longlong,
+    *mut ::std::os::raw::c_longlong,
+    ::std::os::raw::c_longlong,
+    ::std::os::raw::c_longlong,
+    *mut ::std::os::raw::c_longlong,
+    *mut ::std::os::raw::c_longlong,
+    *mut ::std::os::raw::c_longlong,
+    *mut ::std::os::raw::c_longlong,
+    *mut ::std::os::raw::c_longlong,
+    *mut ::std::os::raw::c_longlong,
+    *mut ::std::os::raw::c_longlong,
     *mut c_float,
     *mut c_float,
 ) -> () = amd_l2;
 #[no_mangle]
 pub unsafe extern "C" fn amd_l1(
-    mut n: libc::c_longlong,
-    mut Ap: *const libc::c_longlong,
-    mut Ai: *const libc::c_longlong,
-    mut P: *mut libc::c_longlong,
-    mut Pinv: *mut libc::c_longlong,
-    mut Len: *mut libc::c_longlong,
-    mut slen: libc::c_longlong,
-    mut S: *mut libc::c_longlong,
+    mut n: ::std::os::raw::c_longlong,
+    mut Ap: *const ::std::os::raw::c_longlong,
+    mut Ai: *const ::std::os::raw::c_longlong,
+    mut P: *mut ::std::os::raw::c_longlong,
+    mut Pinv: *mut ::std::os::raw::c_longlong,
+    mut Len: *mut ::std::os::raw::c_longlong,
+    mut slen: ::std::os::raw::c_longlong,
+    mut S: *mut ::std::os::raw::c_longlong,
     mut Control: *mut c_float,
     mut Info: *mut c_float,
 ) {
-    let mut i: libc::c_longlong = 0;
-    let mut j: libc::c_longlong = 0;
-    let mut k: libc::c_longlong = 0;
-    let mut p: libc::c_longlong = 0;
-    let mut pfree: libc::c_longlong = 0;
-    let mut iwlen: libc::c_longlong = 0;
-    let mut pj: libc::c_longlong = 0;
-    let mut p1: libc::c_longlong = 0;
-    let mut p2: libc::c_longlong = 0;
-    let mut pj2: libc::c_longlong = 0;
-    let mut Iw: *mut libc::c_longlong = 0 as *mut libc::c_longlong;
-    let mut Pe: *mut libc::c_longlong = 0 as *mut libc::c_longlong;
-    let mut Nv: *mut libc::c_longlong = 0 as *mut libc::c_longlong;
-    let mut Head: *mut libc::c_longlong = 0 as *mut libc::c_longlong;
-    let mut Elen: *mut libc::c_longlong = 0 as *mut libc::c_longlong;
-    let mut Degree: *mut libc::c_longlong = 0 as *mut libc::c_longlong;
-    let mut s: *mut libc::c_longlong = 0 as *mut libc::c_longlong;
-    let mut W: *mut libc::c_longlong = 0 as *mut libc::c_longlong;
-    let mut Sp: *mut libc::c_longlong = 0 as *mut libc::c_longlong;
-    let mut Tp: *mut libc::c_longlong = 0 as *mut libc::c_longlong;
-    iwlen = slen - 6 as libc::c_int as libc::c_longlong * n;
+    let mut i: ::std::os::raw::c_longlong = 0;
+    let mut j: ::std::os::raw::c_longlong = 0;
+    let mut k: ::std::os::raw::c_longlong = 0;
+    let mut p: ::std::os::raw::c_longlong = 0;
+    let mut pfree: ::std::os::raw::c_longlong = 0;
+    let mut iwlen: ::std::os::raw::c_longlong = 0;
+    let mut pj: ::std::os::raw::c_longlong = 0;
+    let mut p1: ::std::os::raw::c_longlong = 0;
+    let mut p2: ::std::os::raw::c_longlong = 0;
+    let mut pj2: ::std::os::raw::c_longlong = 0;
+    let mut Iw: *mut ::std::os::raw::c_longlong = 0 as *mut ::std::os::raw::c_longlong;
+    let mut Pe: *mut ::std::os::raw::c_longlong = 0 as *mut ::std::os::raw::c_longlong;
+    let mut Nv: *mut ::std::os::raw::c_longlong = 0 as *mut ::std::os::raw::c_longlong;
+    let mut Head: *mut ::std::os::raw::c_longlong = 0 as *mut ::std::os::raw::c_longlong;
+    let mut Elen: *mut ::std::os::raw::c_longlong = 0 as *mut ::std::os::raw::c_longlong;
+    let mut Degree: *mut ::std::os::raw::c_longlong = 0 as *mut ::std::os::raw::c_longlong;
+    let mut s: *mut ::std::os::raw::c_longlong = 0 as *mut ::std::os::raw::c_longlong;
+    let mut W: *mut ::std::os::raw::c_longlong = 0 as *mut ::std::os::raw::c_longlong;
+    let mut Sp: *mut ::std::os::raw::c_longlong = 0 as *mut ::std::os::raw::c_longlong;
+    let mut Tp: *mut ::std::os::raw::c_longlong = 0 as *mut ::std::os::raw::c_longlong;
+    iwlen = slen - 6 as ::std::os::raw::c_int as ::std::os::raw::c_longlong * n;
     s = S;
     Pe = s;
     s = s.offset(n as isize);
@@ -87,18 +86,18 @@ pub unsafe extern "C" fn amd_l1(
     s = s.offset(iwlen as isize);
     Sp = Nv;
     Tp = W;
-    pfree = 0 as libc::c_int as libc::c_longlong;
-    j = 0 as libc::c_int as libc::c_longlong;
+    pfree = 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong;
+    j = 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong;
     while j < n {
         *Pe.offset(j as isize) = pfree;
         *Sp.offset(j as isize) = pfree;
         pfree += *Len.offset(j as isize);
         j += 1;
     }
-    k = 0 as libc::c_int as libc::c_longlong;
+    k = 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong;
     while k < n {
         p1 = *Ap.offset(k as isize);
-        p2 = *Ap.offset((k + 1 as libc::c_int as libc::c_longlong) as isize);
+        p2 = *Ap.offset((k + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize);
         p = p1;
         while p < p2 {
             j = *Ai.offset(p as isize);
@@ -112,7 +111,7 @@ pub unsafe extern "C" fn amd_l1(
                 *fresh2 = *fresh2 + 1;
                 *Iw.offset(fresh3 as isize) = j;
                 p += 1;
-                pj2 = *Ap.offset((j + 1 as libc::c_int as libc::c_longlong) as isize);
+                pj2 = *Ap.offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize);
                 pj = *Tp.offset(j as isize);
                 while pj < pj2 {
                     i = *Ai.offset(pj as isize);
@@ -144,10 +143,10 @@ pub unsafe extern "C" fn amd_l1(
         *Tp.offset(k as isize) = p;
         k += 1;
     }
-    j = 0 as libc::c_int as libc::c_longlong;
+    j = 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong;
     while j < n {
         pj = *Tp.offset(j as isize);
-        while pj < *Ap.offset((j + 1 as libc::c_int as libc::c_longlong) as isize) {
+        while pj < *Ap.offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize) {
             i = *Ai.offset(pj as isize);
             let ref mut fresh8 = *Sp.offset(i as isize);
             let fresh9 = *fresh8;

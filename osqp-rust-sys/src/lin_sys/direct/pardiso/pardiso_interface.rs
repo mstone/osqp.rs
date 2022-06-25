@@ -1,8 +1,7 @@
-use ::libc;
 extern "C" {
-    fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
-    fn calloc(_: libc::c_ulong, _: libc::c_ulong) -> *mut libc::c_void;
-    fn free(_: *mut libc::c_void);
+    fn malloc(_: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void;
+    fn calloc(_: ::std::os::raw::c_ulong, _: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void;
+    fn free(_: *mut ::std::os::raw::c_void);
     fn update_KKT_param2(
         KKT: *mut csc,
         param2: *const c_float,
@@ -30,10 +29,10 @@ extern "C" {
         Pdiag_n: *mut c_int,
         param2toKKT: *mut c_int,
     ) -> *mut csc;
-    fn printf(_: *const libc::c_char, _: ...) -> libc::c_int;
+    fn printf(_: *const ::std::os::raw::c_char, _: ...) -> ::std::os::raw::c_int;
     fn csc_spfree(A: *mut csc);
     fn pardiso(
-        _: *mut *mut libc::c_void,
+        _: *mut *mut ::std::os::raw::c_void,
         _: *const c_int,
         _: *const c_int,
         _: *const c_int,
@@ -53,12 +52,12 @@ extern "C" {
     fn mkl_set_interface_layer(_: c_int) -> c_int;
     fn mkl_get_max_threads() -> c_int;
 }
-pub type c_int = libc::c_longlong;
-pub type c_float = libc::c_double;
-pub type linsys_solver_type = libc::c_uint;
+pub type c_int = ::std::os::raw::c_longlong;
+pub type c_float = ::std::os::raw::c_double;
+pub type linsys_solver_type = ::std::os::raw::c_uint;
 pub const MKL_PARDISO_SOLVER: linsys_solver_type = 1;
 pub const QDLDL_SOLVER: linsys_solver_type = 0;
-pub type osqp_error_type = libc::c_uint;
+pub type osqp_error_type = ::std::os::raw::c_uint;
 pub const OSQP_WORKSPACE_NOT_INIT_ERROR: osqp_error_type = 7;
 pub const OSQP_MEM_ALLOC_ERROR: osqp_error_type = 6;
 pub const OSQP_NONCVX_ERROR: osqp_error_type = 5;
@@ -100,7 +99,7 @@ pub struct pardiso {
     pub polish: c_int,
     pub n: c_int,
     pub m: c_int,
-    pub pt: [*mut libc::c_void; 64],
+    pub pt: [*mut ::std::os::raw::c_void; 64],
     pub iparm: [c_int; 64],
     pub nKKT: c_int,
     pub mtype: c_int,
@@ -120,18 +119,18 @@ pub struct pardiso {
 }
 pub type pardiso_solver = pardiso;
 pub const c_calloc: unsafe extern "C" fn(
-    libc::c_ulong,
-    libc::c_ulong,
-) -> *mut libc::c_void = calloc;
-pub const c_malloc: unsafe extern "C" fn(libc::c_ulong) -> *mut libc::c_void = malloc;
-pub const c_print: unsafe extern "C" fn(*const libc::c_char, ...) -> libc::c_int = printf;
-pub const c_free: unsafe extern "C" fn(*mut libc::c_void) -> () = free;
-pub const OSQP_NULL: libc::c_int = 0 as libc::c_int;
-pub const MKL_INTERFACE_ILP64: libc::c_int = 0x1 as libc::c_int;
-pub const PARDISO_SYMBOLIC: libc::c_int = 11 as libc::c_int;
-pub const PARDISO_NUMERIC: libc::c_int = 22 as libc::c_int;
-pub const PARDISO_SOLVE: libc::c_int = 33 as libc::c_int;
-pub const PARDISO_CLEANUP: libc::c_int = -(1 as libc::c_int);
+    ::std::os::raw::c_ulong,
+    ::std::os::raw::c_ulong,
+) -> *mut ::std::os::raw::c_void = calloc;
+pub const c_malloc: unsafe extern "C" fn(::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void = malloc;
+pub const c_print: unsafe extern "C" fn(*const ::std::os::raw::c_char, ...) -> ::std::os::raw::c_int = printf;
+pub const c_free: unsafe extern "C" fn(*mut ::std::os::raw::c_void) -> () = free;
+pub const OSQP_NULL: ::std::os::raw::c_int = 0 as ::std::os::raw::c_int;
+pub const MKL_INTERFACE_ILP64: ::std::os::raw::c_int = 0x1 as ::std::os::raw::c_int;
+pub const PARDISO_SYMBOLIC: ::std::os::raw::c_int = 11 as ::std::os::raw::c_int;
+pub const PARDISO_NUMERIC: ::std::os::raw::c_int = 22 as ::std::os::raw::c_int;
+pub const PARDISO_SOLVE: ::std::os::raw::c_int = 33 as ::std::os::raw::c_int;
+pub const PARDISO_CLEANUP: ::std::os::raw::c_int = -(1 as ::std::os::raw::c_int);
 #[no_mangle]
 pub unsafe extern "C" fn free_linsys_solver_pardiso(mut s: *mut pardiso_solver) {
     if !s.is_null() {
@@ -154,53 +153,53 @@ pub unsafe extern "C" fn free_linsys_solver_pardiso(mut s: *mut pardiso_solver) 
             &mut (*s).fdum,
             &mut (*s).error,
         );
-        if (*s).error != 0 as libc::c_int as libc::c_longlong {
+        if (*s).error != 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
             printf(
-                b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+                b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
                 (*::std::mem::transmute::<
                     &[u8; 27],
-                    &[libc::c_char; 27],
+                    &[::std::os::raw::c_char; 27],
                 >(b"free_linsys_solver_pardiso\0"))
                     .as_ptr(),
             );
             printf(
                 b"Error during MKL Pardiso cleanup: %d\0" as *const u8
-                    as *const libc::c_char,
-                (*s).error as libc::c_int,
+                    as *const ::std::os::raw::c_char,
+                (*s).error as ::std::os::raw::c_int,
             );
-            printf(b"\n\0" as *const u8 as *const libc::c_char);
+            printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
         }
         if !((*s).KKT).is_null() {
             csc_spfree((*s).KKT);
         }
         if !((*s).KKT_i).is_null() {
-            free((*s).KKT_i as *mut libc::c_void);
+            free((*s).KKT_i as *mut ::std::os::raw::c_void);
         }
         if !((*s).KKT_p).is_null() {
-            free((*s).KKT_p as *mut libc::c_void);
+            free((*s).KKT_p as *mut ::std::os::raw::c_void);
         }
         if !((*s).bp).is_null() {
-            free((*s).bp as *mut libc::c_void);
+            free((*s).bp as *mut ::std::os::raw::c_void);
         }
         if !((*s).sol).is_null() {
-            free((*s).sol as *mut libc::c_void);
+            free((*s).sol as *mut ::std::os::raw::c_void);
         }
         if !((*s).rho_inv_vec).is_null() {
-            free((*s).rho_inv_vec as *mut libc::c_void);
+            free((*s).rho_inv_vec as *mut ::std::os::raw::c_void);
         }
         if !((*s).Pdiag_idx).is_null() {
-            free((*s).Pdiag_idx as *mut libc::c_void);
+            free((*s).Pdiag_idx as *mut ::std::os::raw::c_void);
         }
         if !((*s).PtoKKT).is_null() {
-            free((*s).PtoKKT as *mut libc::c_void);
+            free((*s).PtoKKT as *mut ::std::os::raw::c_void);
         }
         if !((*s).AtoKKT).is_null() {
-            free((*s).AtoKKT as *mut libc::c_void);
+            free((*s).AtoKKT as *mut ::std::os::raw::c_void);
         }
         if !((*s).rhotoKKT).is_null() {
-            free((*s).rhotoKKT as *mut libc::c_void);
+            free((*s).rhotoKKT as *mut ::std::os::raw::c_void);
         }
-        free(s as *mut libc::c_void);
+        free(s as *mut ::std::os::raw::c_void);
     }
 }
 #[no_mangle]
@@ -217,8 +216,8 @@ pub unsafe extern "C" fn init_linsys_solver_pardiso(
     let mut n_plus_m: c_int = 0;
     let mut s: *mut pardiso_solver = 0 as *mut pardiso_solver;
     s = calloc(
-        1 as libc::c_int as libc::c_ulong,
-        ::std::mem::size_of::<pardiso_solver>() as libc::c_ulong,
+        1 as ::std::os::raw::c_int as ::std::os::raw::c_ulong,
+        ::std::mem::size_of::<pardiso_solver>() as ::std::os::raw::c_ulong,
     ) as *mut pardiso_solver;
     *sp = s;
     (*s).n = (*P).n;
@@ -249,21 +248,21 @@ pub unsafe extern "C" fn init_linsys_solver_pardiso(
     (*s).type_0 = MKL_PARDISO_SOLVER;
     let ref mut fresh4 = (*s).bp;
     *fresh4 = malloc(
-        (::std::mem::size_of::<c_float>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul(n_plus_m as libc::c_ulonglong) as libc::c_ulong,
+        (::std::mem::size_of::<c_float>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul(n_plus_m as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
     ) as *mut c_float;
     let ref mut fresh5 = (*s).sol;
     *fresh5 = malloc(
-        (::std::mem::size_of::<c_float>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul(n_plus_m as libc::c_ulonglong) as libc::c_ulong,
+        (::std::mem::size_of::<c_float>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul(n_plus_m as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
     ) as *mut c_float;
     let ref mut fresh6 = (*s).rho_inv_vec;
     *fresh6 = malloc(
-        (::std::mem::size_of::<c_float>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul(n_plus_m as libc::c_ulonglong) as libc::c_ulong,
+        (::std::mem::size_of::<c_float>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul(n_plus_m as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
     ) as *mut c_float;
     if polish != 0 {
-        i = 0 as libc::c_int as c_int;
+        i = 0 as ::std::os::raw::c_int as c_int;
         while i < (*A).m {
             *((*s).rho_inv_vec).offset(i as isize) = sigma;
             i += 1;
@@ -272,7 +271,7 @@ pub unsafe extern "C" fn init_linsys_solver_pardiso(
         *fresh7 = form_KKT(
             P,
             A,
-            1 as libc::c_int as c_int,
+            1 as ::std::os::raw::c_int as c_int,
             sigma,
             (*s).rho_inv_vec,
             OSQP_NULL as *mut c_int,
@@ -284,26 +283,26 @@ pub unsafe extern "C" fn init_linsys_solver_pardiso(
     } else {
         let ref mut fresh8 = (*s).PtoKKT;
         *fresh8 = malloc(
-            (*((*P).p).offset((*P).n as isize) as libc::c_ulonglong)
+            (*((*P).p).offset((*P).n as isize) as ::std::os::raw::c_ulonglong)
                 .wrapping_mul(
-                    ::std::mem::size_of::<c_int>() as libc::c_ulong as libc::c_ulonglong,
-                ) as libc::c_ulong,
+                    ::std::mem::size_of::<c_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong,
+                ) as ::std::os::raw::c_ulong,
         ) as *mut c_int;
         let ref mut fresh9 = (*s).AtoKKT;
         *fresh9 = malloc(
-            (*((*A).p).offset((*A).n as isize) as libc::c_ulonglong)
+            (*((*A).p).offset((*A).n as isize) as ::std::os::raw::c_ulonglong)
                 .wrapping_mul(
-                    ::std::mem::size_of::<c_int>() as libc::c_ulong as libc::c_ulonglong,
-                ) as libc::c_ulong,
+                    ::std::mem::size_of::<c_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong,
+                ) as ::std::os::raw::c_ulong,
         ) as *mut c_int;
         let ref mut fresh10 = (*s).rhotoKKT;
         *fresh10 = malloc(
-            ((*A).m as libc::c_ulonglong)
+            ((*A).m as ::std::os::raw::c_ulonglong)
                 .wrapping_mul(
-                    ::std::mem::size_of::<c_int>() as libc::c_ulong as libc::c_ulonglong,
-                ) as libc::c_ulong,
+                    ::std::mem::size_of::<c_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong,
+                ) as ::std::os::raw::c_ulong,
         ) as *mut c_int;
-        i = 0 as libc::c_int as c_int;
+        i = 0 as ::std::os::raw::c_int as c_int;
         while i < (*A).m {
             *((*s).rho_inv_vec)
                 .offset(i as isize) = 1.0f64 / *rho_vec.offset(i as isize);
@@ -313,7 +312,7 @@ pub unsafe extern "C" fn init_linsys_solver_pardiso(
         *fresh11 = form_KKT(
             P,
             A,
-            1 as libc::c_int as c_int,
+            1 as ::std::os::raw::c_int as c_int,
             sigma,
             (*s).rho_inv_vec,
             (*s).PtoKKT,
@@ -325,76 +324,76 @@ pub unsafe extern "C" fn init_linsys_solver_pardiso(
     }
     if ((*s).KKT).is_null() {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 27],
-                &[libc::c_char; 27],
+                &[::std::os::raw::c_char; 27],
             >(b"init_linsys_solver_pardiso\0"))
                 .as_ptr(),
         );
-        printf(b"Error in forming KKT matrix\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
+        printf(b"Error in forming KKT matrix\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
         free_linsys_solver_pardiso(s);
-        return OSQP_LINSYS_SOLVER_INIT_ERROR as libc::c_int as c_int;
+        return OSQP_LINSYS_SOLVER_INIT_ERROR as ::std::os::raw::c_int as c_int;
     } else {
         nnzKKT = *((*(*s).KKT).p).offset((*(*s).KKT).m as isize);
         let ref mut fresh12 = (*s).KKT_i;
         *fresh12 = malloc(
-            (nnzKKT as libc::c_ulonglong)
+            (nnzKKT as ::std::os::raw::c_ulonglong)
                 .wrapping_mul(
-                    ::std::mem::size_of::<c_int>() as libc::c_ulong as libc::c_ulonglong,
-                ) as libc::c_ulong,
+                    ::std::mem::size_of::<c_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong,
+                ) as ::std::os::raw::c_ulong,
         ) as *mut c_int;
         let ref mut fresh13 = (*s).KKT_p;
         *fresh13 = malloc(
-            (((*(*s).KKT).m + 1 as libc::c_int as libc::c_longlong) as libc::c_ulonglong)
+            (((*(*s).KKT).m + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as ::std::os::raw::c_ulonglong)
                 .wrapping_mul(
-                    ::std::mem::size_of::<c_int>() as libc::c_ulong as libc::c_ulonglong,
-                ) as libc::c_ulong,
+                    ::std::mem::size_of::<c_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong,
+                ) as ::std::os::raw::c_ulong,
         ) as *mut c_int;
-        i = 0 as libc::c_int as c_int;
+        i = 0 as ::std::os::raw::c_int as c_int;
         while i < nnzKKT {
             *((*s).KKT_i)
                 .offset(
                     i as isize,
                 ) = *((*(*s).KKT).i).offset(i as isize)
-                + 1 as libc::c_int as libc::c_longlong;
+                + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong;
             i += 1;
         }
-        i = 0 as libc::c_int as c_int;
-        while i < n_plus_m + 1 as libc::c_int as libc::c_longlong {
+        i = 0 as ::std::os::raw::c_int as c_int;
+        while i < n_plus_m + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
             *((*s).KKT_p)
                 .offset(
                     i as isize,
                 ) = *((*(*s).KKT).p).offset(i as isize)
-                + 1 as libc::c_int as libc::c_longlong;
+                + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong;
             i += 1;
         }
     }
     mkl_set_interface_layer(MKL_INTERFACE_ILP64 as c_int);
-    (*s).mtype = -(2 as libc::c_int) as c_int;
-    (*s).nrhs = 1 as libc::c_int as c_int;
-    (*s).maxfct = 1 as libc::c_int as c_int;
-    (*s).mnum = 1 as libc::c_int as c_int;
-    (*s).msglvl = 0 as libc::c_int as c_int;
-    (*s).error = 0 as libc::c_int as c_int;
-    i = 0 as libc::c_int as c_int;
-    while i < 64 as libc::c_int as libc::c_longlong {
-        (*s).iparm[i as usize] = 0 as libc::c_int as c_int;
+    (*s).mtype = -(2 as ::std::os::raw::c_int) as c_int;
+    (*s).nrhs = 1 as ::std::os::raw::c_int as c_int;
+    (*s).maxfct = 1 as ::std::os::raw::c_int as c_int;
+    (*s).mnum = 1 as ::std::os::raw::c_int as c_int;
+    (*s).msglvl = 0 as ::std::os::raw::c_int as c_int;
+    (*s).error = 0 as ::std::os::raw::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
+    while i < 64 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
+        (*s).iparm[i as usize] = 0 as ::std::os::raw::c_int as c_int;
         let ref mut fresh14 = (*s).pt[i as usize];
-        *fresh14 = 0 as *mut libc::c_void;
+        *fresh14 = 0 as *mut ::std::os::raw::c_void;
         i += 1;
     }
-    (*s).iparm[0 as libc::c_int as usize] = 1 as libc::c_int as c_int;
-    (*s).iparm[1 as libc::c_int as usize] = 3 as libc::c_int as c_int;
+    (*s).iparm[0 as ::std::os::raw::c_int as usize] = 1 as ::std::os::raw::c_int as c_int;
+    (*s).iparm[1 as ::std::os::raw::c_int as usize] = 3 as ::std::os::raw::c_int as c_int;
     if polish != 0 {
-        (*s).iparm[5 as libc::c_int as usize] = 1 as libc::c_int as c_int;
+        (*s).iparm[5 as ::std::os::raw::c_int as usize] = 1 as ::std::os::raw::c_int as c_int;
     } else {
-        (*s).iparm[5 as libc::c_int as usize] = 0 as libc::c_int as c_int;
+        (*s).iparm[5 as ::std::os::raw::c_int as usize] = 0 as ::std::os::raw::c_int as c_int;
     }
-    (*s).iparm[7 as libc::c_int as usize] = 0 as libc::c_int as c_int;
-    (*s).iparm[9 as libc::c_int as usize] = 13 as libc::c_int as c_int;
-    (*s).iparm[34 as libc::c_int as usize] = 0 as libc::c_int as c_int;
+    (*s).iparm[7 as ::std::os::raw::c_int as usize] = 0 as ::std::os::raw::c_int as c_int;
+    (*s).iparm[9 as ::std::os::raw::c_int as usize] = 13 as ::std::os::raw::c_int as c_int;
+    (*s).iparm[34 as ::std::os::raw::c_int as usize] = 0 as ::std::os::raw::c_int as c_int;
     (*s).nthreads = mkl_get_max_threads();
     (*s).phase = PARDISO_SYMBOLIC as c_int;
     pardiso(
@@ -415,24 +414,24 @@ pub unsafe extern "C" fn init_linsys_solver_pardiso(
         &mut (*s).fdum,
         &mut (*s).error,
     );
-    if (*s).error != 0 as libc::c_int as libc::c_longlong {
+    if (*s).error != 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 27],
-                &[libc::c_char; 27],
+                &[::std::os::raw::c_char; 27],
             >(b"init_linsys_solver_pardiso\0"))
                 .as_ptr(),
         );
         printf(
             b"Error during symbolic factorization: %d\0" as *const u8
-                as *const libc::c_char,
-            (*s).error as libc::c_int,
+                as *const ::std::os::raw::c_char,
+            (*s).error as ::std::os::raw::c_int,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
         free_linsys_solver_pardiso(s);
         *sp = OSQP_NULL as *mut pardiso_solver;
-        return OSQP_LINSYS_SOLVER_INIT_ERROR as libc::c_int as c_int;
+        return OSQP_LINSYS_SOLVER_INIT_ERROR as ::std::os::raw::c_int as c_int;
     }
     (*s).phase = PARDISO_NUMERIC as c_int;
     pardiso(
@@ -455,24 +454,24 @@ pub unsafe extern "C" fn init_linsys_solver_pardiso(
     );
     if (*s).error != 0 {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 27],
-                &[libc::c_char; 27],
+                &[::std::os::raw::c_char; 27],
             >(b"init_linsys_solver_pardiso\0"))
                 .as_ptr(),
         );
         printf(
             b"Error during numerical factorization: %d\0" as *const u8
-                as *const libc::c_char,
-            (*s).error as libc::c_int,
+                as *const ::std::os::raw::c_char,
+            (*s).error as ::std::os::raw::c_int,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
         free_linsys_solver_pardiso(s);
         *sp = OSQP_NULL as *mut pardiso_solver;
-        return OSQP_LINSYS_SOLVER_INIT_ERROR as libc::c_int as c_int;
+        return OSQP_LINSYS_SOLVER_INIT_ERROR as ::std::os::raw::c_int as c_int;
     }
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn solve_linsys_pardiso(
@@ -499,30 +498,30 @@ pub unsafe extern "C" fn solve_linsys_pardiso(
         (*s).sol,
         &mut (*s).error,
     );
-    if (*s).error != 0 as libc::c_int as libc::c_longlong {
+    if (*s).error != 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 21],
-                &[libc::c_char; 21],
+                &[::std::os::raw::c_char; 21],
             >(b"solve_linsys_pardiso\0"))
                 .as_ptr(),
         );
         printf(
             b"Error during linear system solution: %d\0" as *const u8
-                as *const libc::c_char,
-            (*s).error as libc::c_int,
+                as *const ::std::os::raw::c_char,
+            (*s).error as ::std::os::raw::c_int,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*s).polish == 0 {
-        j = 0 as libc::c_int as c_int;
+        j = 0 as ::std::os::raw::c_int as c_int;
         while j < (*s).n {
             *b.offset(j as isize) = *((*s).sol).offset(j as isize);
             j += 1;
         }
-        j = 0 as libc::c_int as c_int;
+        j = 0 as ::std::os::raw::c_int as c_int;
         while j < (*s).m {
             let ref mut fresh15 = *b.offset((j + (*s).n) as isize);
             *fresh15
@@ -531,7 +530,7 @@ pub unsafe extern "C" fn solve_linsys_pardiso(
             j += 1;
         }
     }
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn update_linsys_solver_matrices_pardiso(
@@ -568,7 +567,7 @@ pub unsafe extern "C" fn update_linsys_solver_rho_vec_pardiso(
     mut rho_vec: *const c_float,
 ) -> c_int {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < (*s).m {
         *((*s).rho_inv_vec).offset(i as isize) = 1.0f64 / *rho_vec.offset(i as isize);
         i += 1;

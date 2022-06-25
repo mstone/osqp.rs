@@ -1,4 +1,3 @@
-use ::libc;
 extern "C" {
     fn init_linsys_solver_qdldl(
         sp: *mut *mut qdldl_solver,
@@ -16,12 +15,12 @@ extern "C" {
         rho_vec: *const c_float,
         polish: c_int,
     ) -> c_int;
-    fn lh_load_pardiso(libname: *const libc::c_char) -> c_int;
+    fn lh_load_pardiso(libname: *const ::std::os::raw::c_char) -> c_int;
     fn lh_unload_pardiso() -> c_int;
 }
-pub type c_int = libc::c_longlong;
-pub type c_float = libc::c_double;
-pub type linsys_solver_type = libc::c_uint;
+pub type c_int = ::std::os::raw::c_longlong;
+pub type c_float = ::std::os::raw::c_double;
+pub type linsys_solver_type = ::std::os::raw::c_uint;
 pub const MKL_PARDISO_SOLVER: linsys_solver_type = 1;
 pub const QDLDL_SOLVER: linsys_solver_type = 0;
 #[derive(Copy, Clone)]
@@ -87,9 +86,9 @@ pub struct qdldl {
     pub bwork: *mut QDLDL_bool,
     pub fwork: *mut QDLDL_float,
 }
-pub type QDLDL_float = libc::c_double;
-pub type QDLDL_bool = libc::c_uchar;
-pub type QDLDL_int = libc::c_longlong;
+pub type QDLDL_float = ::std::os::raw::c_double;
+pub type QDLDL_bool = ::std::os::raw::c_uchar;
+pub type QDLDL_int = ::std::os::raw::c_longlong;
 pub type pardiso_solver = pardiso;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -114,7 +113,7 @@ pub struct pardiso {
     pub polish: c_int,
     pub n: c_int,
     pub m: c_int,
-    pub pt: [*mut libc::c_void; 64],
+    pub pt: [*mut ::std::os::raw::c_void; 64],
     pub iparm: [c_int; 64],
     pub nKKT: c_int,
     pub mtype: c_int,
@@ -132,30 +131,30 @@ pub struct pardiso {
     pub AtoKKT: *mut c_int,
     pub rhotoKKT: *mut c_int,
 }
-pub const OSQP_NULL: libc::c_int = 0 as libc::c_int;
+pub const OSQP_NULL: ::std::os::raw::c_int = 0 as ::std::os::raw::c_int;
 #[no_mangle]
-pub static mut LINSYS_SOLVER_NAME: [*const libc::c_char; 2] = [
-    b"qdldl\0" as *const u8 as *const libc::c_char,
-    b"mkl pardiso\0" as *const u8 as *const libc::c_char,
+pub static mut LINSYS_SOLVER_NAME: [*const ::std::os::raw::c_char; 2] = [
+    b"qdldl\0" as *const u8 as *const ::std::os::raw::c_char,
+    b"mkl pardiso\0" as *const u8 as *const ::std::os::raw::c_char,
 ];
 #[no_mangle]
 pub unsafe extern "C" fn load_linsys_solver(
     mut linsys_solver: linsys_solver_type,
 ) -> c_int {
-    match linsys_solver as libc::c_uint {
-        0 => return 0 as libc::c_int as c_int,
-        1 => return lh_load_pardiso(OSQP_NULL as *const libc::c_char),
-        _ => return 0 as libc::c_int as c_int,
+    match linsys_solver as ::std::os::raw::c_uint {
+        0 => return 0 as ::std::os::raw::c_int as c_int,
+        1 => return lh_load_pardiso(OSQP_NULL as *const ::std::os::raw::c_char),
+        _ => return 0 as ::std::os::raw::c_int as c_int,
     };
 }
 #[no_mangle]
 pub unsafe extern "C" fn unload_linsys_solver(
     mut linsys_solver: linsys_solver_type,
 ) -> c_int {
-    match linsys_solver as libc::c_uint {
-        0 => return 0 as libc::c_int as c_int,
+    match linsys_solver as ::std::os::raw::c_uint {
+        0 => return 0 as ::std::os::raw::c_int as c_int,
         1 => return lh_unload_pardiso(),
-        _ => return 0 as libc::c_int as c_int,
+        _ => return 0 as ::std::os::raw::c_int as c_int,
     };
 }
 #[no_mangle]
@@ -168,7 +167,7 @@ pub unsafe extern "C" fn init_linsys_solver(
     mut linsys_solver: linsys_solver_type,
     mut polish: c_int,
 ) -> c_int {
-    match linsys_solver as libc::c_uint {
+    match linsys_solver as ::std::os::raw::c_uint {
         0 => {
             return init_linsys_solver_qdldl(
                 s as *mut *mut qdldl_solver,

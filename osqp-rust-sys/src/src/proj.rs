@@ -1,10 +1,9 @@
-use ::libc;
 extern "C" {
     pub type OSQP_TIMER;
 }
-pub type c_int = libc::c_longlong;
-pub type c_float = libc::c_double;
-pub type linsys_solver_type = libc::c_uint;
+pub type c_int = ::std::os::raw::c_longlong;
+pub type c_float = ::std::os::raw::c_double;
+pub type linsys_solver_type = ::std::os::raw::c_uint;
 pub const MKL_PARDISO_SOLVER: linsys_solver_type = 1;
 pub const QDLDL_SOLVER: linsys_solver_type = 0;
 #[derive(Copy, Clone)]
@@ -54,7 +53,7 @@ pub struct OSQPSolution {
 #[repr(C)]
 pub struct OSQPInfo {
     pub iter: c_int,
-    pub status: [libc::c_char; 32],
+    pub status: [::std::os::raw::c_char; 32],
     pub status_val: c_int,
     pub status_polish: c_int,
     pub obj_val: c_float,
@@ -163,7 +162,7 @@ pub unsafe extern "C" fn project(mut work: *mut OSQPWorkspace, mut z: *mut c_flo
     let mut i: c_int = 0;
     let mut m: c_int = 0;
     m = (*(*work).data).m;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < m {
         *z
             .offset(
@@ -194,7 +193,7 @@ pub unsafe extern "C" fn project_normalcone(
     let mut i: c_int = 0;
     let mut m: c_int = 0;
     m = (*(*work).data).m;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < m {
         *((*work).z_prev)
             .offset(i as isize) = *z.offset(i as isize) + *y.offset(i as isize);

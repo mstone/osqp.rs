@@ -1,8 +1,7 @@
-use ::libc;
 extern "C" {
-    fn c_strcpy(dest: *mut libc::c_char, source: *const libc::c_char);
-    fn sqrt(_: libc::c_double) -> libc::c_double;
-    fn printf(_: *const libc::c_char, _: ...) -> libc::c_int;
+    fn c_strcpy(dest: *mut ::std::os::raw::c_char, source: *const ::std::os::raw::c_char);
+    fn sqrt(_: ::std::os::raw::c_double) -> ::std::os::raw::c_double;
+    fn printf(_: *const ::std::os::raw::c_char, _: ...) -> ::std::os::raw::c_int;
     fn osqp_toc(t: *mut OSQPTimer) -> c_float;
     fn prea_vec_copy(a: *const c_float, b: *mut c_float, n: c_int);
     fn vec_set_scalar(a: *mut c_float, sc: c_float, n: c_int);
@@ -31,9 +30,9 @@ extern "C" {
     fn project(work: *mut OSQPWorkspace, z: *mut c_float);
     fn unscale_solution(work: *mut OSQPWorkspace) -> c_int;
 }
-pub type c_int = libc::c_longlong;
-pub type c_float = libc::c_double;
-pub type linsys_solver_type = libc::c_uint;
+pub type c_int = ::std::os::raw::c_longlong;
+pub type c_float = ::std::os::raw::c_double;
+pub type linsys_solver_type = ::std::os::raw::c_uint;
 pub const MKL_PARDISO_SOLVER: linsys_solver_type = 1;
 pub const QDLDL_SOLVER: linsys_solver_type = 0;
 #[derive(Copy, Clone)]
@@ -76,8 +75,8 @@ pub struct mach_timebase_info {
     pub numer: uint32_t,
     pub denom: uint32_t,
 }
-pub type uint32_t = libc::c_uint;
-pub type uint64_t = libc::c_ulonglong;
+pub type uint32_t = ::std::os::raw::c_uint;
+pub type uint64_t = ::std::os::raw::c_ulonglong;
 pub type OSQPTimer = OSQP_TIMER;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -99,7 +98,7 @@ pub struct OSQPSolution {
 #[repr(C)]
 pub struct OSQPInfo {
     pub iter: c_int,
-    pub status: [libc::c_char; 32],
+    pub status: [::std::os::raw::c_char; 32],
     pub status_val: c_int,
     pub status_polish: c_int,
     pub obj_val: c_float,
@@ -203,26 +202,26 @@ pub struct OSQPWorkspace {
     pub rho_update_from_solve: c_int,
     pub summary_printed: c_int,
 }
-pub const c_print: unsafe extern "C" fn(*const libc::c_char, ...) -> libc::c_int = printf;
-pub const OSQP_SOLVED: libc::c_int = 1 as libc::c_int;
-pub const OSQP_SOLVED_INACCURATE: libc::c_int = 2 as libc::c_int;
-pub const OSQP_MAX_ITER_REACHED: libc::c_int = -(2 as libc::c_int);
-pub const OSQP_TIME_LIMIT_REACHED: libc::c_int = -(6 as libc::c_int);
-pub const OSQP_SIGINT: libc::c_int = -(5 as libc::c_int);
-pub const OSQP_UNSOLVED: libc::c_int = -(10 as libc::c_int);
-pub const OSQP_NAN: libc::c_ulong = 0x7fc00000 as libc::c_ulong;
-pub const OSQP_PRIMAL_INFEASIBLE: libc::c_int = -(3 as libc::c_int);
-pub const OSQP_PRIMAL_INFEASIBLE_INACCURATE: libc::c_int = 3 as libc::c_int;
-pub const OSQP_DUAL_INFEASIBLE: libc::c_int = -(4 as libc::c_int);
-pub const OSQP_DUAL_INFEASIBLE_INACCURATE: libc::c_int = 4 as libc::c_int;
-pub const OSQP_NON_CVX: libc::c_int = -(7 as libc::c_int);
-pub const c_sqrt: unsafe extern "C" fn(libc::c_double) -> libc::c_double = sqrt;
-pub const OSQP_INFTY: libc::c_double = 1e30f64;
-pub const OSQP_DIVISION_TOL: libc::c_double = 1.0f64 / OSQP_INFTY;
-pub const MIN_SCALING: libc::c_double = 1e-04f64;
-pub const RHO_EQ_OVER_RHO_INEQ: libc::c_double = 1e03f64;
-pub const RHO_TOL: libc::c_double = 1e-04f64;
-pub const RHO_MIN: libc::c_double = 1e-06f64;
+pub const c_print: unsafe extern "C" fn(*const ::std::os::raw::c_char, ...) -> ::std::os::raw::c_int = printf;
+pub const OSQP_SOLVED: ::std::os::raw::c_int = 1 as ::std::os::raw::c_int;
+pub const OSQP_SOLVED_INACCURATE: ::std::os::raw::c_int = 2 as ::std::os::raw::c_int;
+pub const OSQP_MAX_ITER_REACHED: ::std::os::raw::c_int = -(2 as ::std::os::raw::c_int);
+pub const OSQP_TIME_LIMIT_REACHED: ::std::os::raw::c_int = -(6 as ::std::os::raw::c_int);
+pub const OSQP_SIGINT: ::std::os::raw::c_int = -(5 as ::std::os::raw::c_int);
+pub const OSQP_UNSOLVED: ::std::os::raw::c_int = -(10 as ::std::os::raw::c_int);
+pub const OSQP_NAN: ::std::os::raw::c_ulong = 0x7fc00000 as ::std::os::raw::c_ulong;
+pub const OSQP_PRIMAL_INFEASIBLE: ::std::os::raw::c_int = -(3 as ::std::os::raw::c_int);
+pub const OSQP_PRIMAL_INFEASIBLE_INACCURATE: ::std::os::raw::c_int = 3 as ::std::os::raw::c_int;
+pub const OSQP_DUAL_INFEASIBLE: ::std::os::raw::c_int = -(4 as ::std::os::raw::c_int);
+pub const OSQP_DUAL_INFEASIBLE_INACCURATE: ::std::os::raw::c_int = 4 as ::std::os::raw::c_int;
+pub const OSQP_NON_CVX: ::std::os::raw::c_int = -(7 as ::std::os::raw::c_int);
+pub const c_sqrt: unsafe extern "C" fn(::std::os::raw::c_double) -> ::std::os::raw::c_double = sqrt;
+pub const OSQP_INFTY: ::std::os::raw::c_double = 1e30f64;
+pub const OSQP_DIVISION_TOL: ::std::os::raw::c_double = 1.0f64 / OSQP_INFTY;
+pub const MIN_SCALING: ::std::os::raw::c_double = 1e-04f64;
+pub const RHO_EQ_OVER_RHO_INEQ: ::std::os::raw::c_double = 1e03f64;
+pub const RHO_TOL: ::std::os::raw::c_double = 1e-04f64;
+pub const RHO_MIN: ::std::os::raw::c_double = 1e-06f64;
 #[no_mangle]
 pub unsafe extern "C" fn compute_rho_estimate(mut work: *mut OSQPWorkspace) -> c_float {
     let mut n: c_int = 0;
@@ -273,7 +272,7 @@ pub unsafe extern "C" fn compute_rho_estimate(mut work: *mut OSQPWorkspace) -> c
 pub unsafe extern "C" fn adapt_rho(mut work: *mut OSQPWorkspace) -> c_int {
     let mut exitflag: c_int = 0;
     let mut rho_new: c_float = 0.;
-    exitflag = 0 as libc::c_int as c_int;
+    exitflag = 0 as ::std::os::raw::c_int as c_int;
     rho_new = compute_rho_estimate(work);
     (*(*work).info).rho_estimate = rho_new;
     if rho_new > (*(*work).settings).rho * (*(*work).settings).adaptive_rho_tolerance
@@ -281,7 +280,7 @@ pub unsafe extern "C" fn adapt_rho(mut work: *mut OSQPWorkspace) -> c_int {
     {
         exitflag = osqp_update_rho(work, rho_new);
         let ref mut fresh0 = (*(*work).info).rho_updates;
-        *fresh0 += 1 as libc::c_int as libc::c_longlong;
+        *fresh0 += 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong;
     }
     return exitflag;
 }
@@ -303,21 +302,21 @@ pub unsafe extern "C" fn set_rho_vec(mut work: *mut OSQPWorkspace) {
     } else {
         1e06f64
     };
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < (*(*work).data).m {
         if *((*(*work).data).l).offset(i as isize) < -OSQP_INFTY * MIN_SCALING
             && *((*(*work).data).u).offset(i as isize) > OSQP_INFTY * MIN_SCALING
         {
-            *((*work).constr_type).offset(i as isize) = -(1 as libc::c_int) as c_int;
+            *((*work).constr_type).offset(i as isize) = -(1 as ::std::os::raw::c_int) as c_int;
             *((*work).rho_vec).offset(i as isize) = RHO_MIN;
         } else if *((*(*work).data).u).offset(i as isize)
                 - *((*(*work).data).l).offset(i as isize) < RHO_TOL
             {
-            *((*work).constr_type).offset(i as isize) = 1 as libc::c_int as c_int;
+            *((*work).constr_type).offset(i as isize) = 1 as ::std::os::raw::c_int as c_int;
             *((*work).rho_vec)
                 .offset(i as isize) = RHO_EQ_OVER_RHO_INEQ * (*(*work).settings).rho;
         } else {
-            *((*work).constr_type).offset(i as isize) = 0 as libc::c_int as c_int;
+            *((*work).constr_type).offset(i as isize) = 0 as ::std::os::raw::c_int as c_int;
             *((*work).rho_vec).offset(i as isize) = (*(*work).settings).rho;
         }
         *((*work).rho_inv_vec)
@@ -330,45 +329,45 @@ pub unsafe extern "C" fn update_rho_vec(mut work: *mut OSQPWorkspace) -> c_int {
     let mut i: c_int = 0;
     let mut exitflag: c_int = 0;
     let mut constr_type_changed: c_int = 0;
-    exitflag = 0 as libc::c_int as c_int;
-    constr_type_changed = 0 as libc::c_int as c_int;
-    i = 0 as libc::c_int as c_int;
+    exitflag = 0 as ::std::os::raw::c_int as c_int;
+    constr_type_changed = 0 as ::std::os::raw::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < (*(*work).data).m {
         if *((*(*work).data).l).offset(i as isize) < -OSQP_INFTY * MIN_SCALING
             && *((*(*work).data).u).offset(i as isize) > OSQP_INFTY * MIN_SCALING
         {
             if *((*work).constr_type).offset(i as isize)
-                != -(1 as libc::c_int) as libc::c_longlong
+                != -(1 as ::std::os::raw::c_int) as ::std::os::raw::c_longlong
             {
-                *((*work).constr_type).offset(i as isize) = -(1 as libc::c_int) as c_int;
+                *((*work).constr_type).offset(i as isize) = -(1 as ::std::os::raw::c_int) as c_int;
                 *((*work).rho_vec).offset(i as isize) = RHO_MIN;
                 *((*work).rho_inv_vec).offset(i as isize) = 1.0f64 / RHO_MIN;
-                constr_type_changed = 1 as libc::c_int as c_int;
+                constr_type_changed = 1 as ::std::os::raw::c_int as c_int;
             }
         } else if *((*(*work).data).u).offset(i as isize)
                 - *((*(*work).data).l).offset(i as isize) < RHO_TOL
             {
             if *((*work).constr_type).offset(i as isize)
-                != 1 as libc::c_int as libc::c_longlong
+                != 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
             {
-                *((*work).constr_type).offset(i as isize) = 1 as libc::c_int as c_int;
+                *((*work).constr_type).offset(i as isize) = 1 as ::std::os::raw::c_int as c_int;
                 *((*work).rho_vec)
                     .offset(i as isize) = RHO_EQ_OVER_RHO_INEQ * (*(*work).settings).rho;
                 *((*work).rho_inv_vec)
                     .offset(i as isize) = 1.0f64 / *((*work).rho_vec).offset(i as isize);
-                constr_type_changed = 1 as libc::c_int as c_int;
+                constr_type_changed = 1 as ::std::os::raw::c_int as c_int;
             }
         } else if *((*work).constr_type).offset(i as isize)
-                != 0 as libc::c_int as libc::c_longlong
+                != 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
             {
-            *((*work).constr_type).offset(i as isize) = 0 as libc::c_int as c_int;
+            *((*work).constr_type).offset(i as isize) = 0 as ::std::os::raw::c_int as c_int;
             *((*work).rho_vec).offset(i as isize) = (*(*work).settings).rho;
             *((*work).rho_inv_vec).offset(i as isize) = 1.0f64 / (*(*work).settings).rho;
-            constr_type_changed = 1 as libc::c_int as c_int;
+            constr_type_changed = 1 as ::std::os::raw::c_int as c_int;
         }
         i += 1;
     }
-    if constr_type_changed == 1 as libc::c_int as libc::c_longlong {
+    if constr_type_changed == 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         exitflag = ((*(*work).linsys_solver).update_rho_vec)
             .expect("non-null function pointer")((*work).linsys_solver, (*work).rho_vec);
     }
@@ -392,7 +391,7 @@ pub unsafe extern "C" fn cold_start(mut work: *mut OSQPWorkspace) {
 }
 unsafe extern "C" fn compute_rhs(mut work: *mut OSQPWorkspace) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < (*(*work).data).n {
         *((*work).xz_tilde)
             .offset(
@@ -401,7 +400,7 @@ unsafe extern "C" fn compute_rhs(mut work: *mut OSQPWorkspace) {
             - *((*(*work).data).q).offset(i as isize);
         i += 1;
     }
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < (*(*work).data).m {
         *((*work).xz_tilde)
             .offset(
@@ -421,7 +420,7 @@ pub unsafe extern "C" fn update_xz_tilde(mut work: *mut OSQPWorkspace) {
 #[no_mangle]
 pub unsafe extern "C" fn update_x(mut work: *mut OSQPWorkspace) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < (*(*work).data).n {
         *((*work).x)
             .offset(
@@ -431,7 +430,7 @@ pub unsafe extern "C" fn update_x(mut work: *mut OSQPWorkspace) {
                 * *((*work).x_prev).offset(i as isize);
         i += 1;
     }
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < (*(*work).data).n {
         *((*work).delta_x)
             .offset(
@@ -443,7 +442,7 @@ pub unsafe extern "C" fn update_x(mut work: *mut OSQPWorkspace) {
 #[no_mangle]
 pub unsafe extern "C" fn update_z(mut work: *mut OSQPWorkspace) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < (*(*work).data).m {
         *((*work).z)
             .offset(
@@ -460,7 +459,7 @@ pub unsafe extern "C" fn update_z(mut work: *mut OSQPWorkspace) {
 #[no_mangle]
 pub unsafe extern "C" fn update_y(mut work: *mut OSQPWorkspace) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < (*(*work).data).m {
         *((*work).delta_y)
             .offset(
@@ -495,13 +494,13 @@ pub unsafe extern "C" fn compute_pri_res(
     mut x: *mut c_float,
     mut z: *mut c_float,
 ) -> c_float {
-    mat_vec((*(*work).data).A, x, (*work).Ax, 0 as libc::c_int as c_int);
+    mat_vec((*(*work).data).A, x, (*work).Ax, 0 as ::std::os::raw::c_int as c_int);
     vec_add_scaled(
         (*work).z_prev,
         (*work).Ax,
         z,
         (*(*work).data).m,
-        -(1 as libc::c_int) as c_float,
+        -(1 as ::std::os::raw::c_int) as c_float,
     );
     if (*(*work).settings).scaling != 0 && (*(*work).settings).scaled_termination == 0 {
         return vec_scaled_norm_inf(
@@ -554,35 +553,35 @@ pub unsafe extern "C" fn compute_dua_res(
     mut y: *mut c_float,
 ) -> c_float {
     prea_vec_copy((*(*work).data).q, (*work).x_prev, (*(*work).data).n);
-    mat_vec((*(*work).data).P, x, (*work).Px, 0 as libc::c_int as c_int);
+    mat_vec((*(*work).data).P, x, (*work).Px, 0 as ::std::os::raw::c_int as c_int);
     mat_tpose_vec(
         (*(*work).data).P,
         x,
         (*work).Px,
-        1 as libc::c_int as c_int,
-        1 as libc::c_int as c_int,
+        1 as ::std::os::raw::c_int as c_int,
+        1 as ::std::os::raw::c_int as c_int,
     );
     vec_add_scaled(
         (*work).x_prev,
         (*work).x_prev,
         (*work).Px,
         (*(*work).data).n,
-        1 as libc::c_int as c_float,
+        1 as ::std::os::raw::c_int as c_float,
     );
-    if (*(*work).data).m > 0 as libc::c_int as libc::c_longlong {
+    if (*(*work).data).m > 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         mat_tpose_vec(
             (*(*work).data).A,
             y,
             (*work).Aty,
-            0 as libc::c_int as c_int,
-            0 as libc::c_int as c_int,
+            0 as ::std::os::raw::c_int as c_int,
+            0 as ::std::os::raw::c_int as c_int,
         );
         vec_add_scaled(
             (*work).x_prev,
             (*work).x_prev,
             (*work).Aty,
             (*(*work).data).n,
-            1 as libc::c_int as c_float,
+            1 as ::std::os::raw::c_int as c_float,
         );
     }
     if (*(*work).settings).scaling != 0 && (*(*work).settings).scaled_termination == 0 {
@@ -655,7 +654,7 @@ pub unsafe extern "C" fn is_primal_infeasible(
     let mut i: c_int = 0;
     let mut norm_delta_y: c_float = 0.;
     let mut ineq_lhs: c_float = 0.0f64;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < (*(*work).data).m {
         if *((*(*work).data).u).offset(i as isize) > OSQP_INFTY * MIN_SCALING {
             if *((*(*work).data).l).offset(i as isize) < -OSQP_INFTY * MIN_SCALING {
@@ -694,24 +693,24 @@ pub unsafe extern "C" fn is_primal_infeasible(
         norm_delta_y = vec_norm_inf((*work).delta_y, (*(*work).data).m);
     }
     if norm_delta_y > OSQP_DIVISION_TOL {
-        i = 0 as libc::c_int as c_int;
+        i = 0 as ::std::os::raw::c_int as c_int;
         while i < (*(*work).data).m {
             ineq_lhs
                 += *((*(*work).data).u).offset(i as isize)
                     * (if *((*work).delta_y).offset(i as isize)
-                        > 0 as libc::c_int as libc::c_double
+                        > 0 as ::std::os::raw::c_int as ::std::os::raw::c_double
                     {
                         *((*work).delta_y).offset(i as isize)
                     } else {
-                        0 as libc::c_int as libc::c_double
+                        0 as ::std::os::raw::c_int as ::std::os::raw::c_double
                     })
                     + *((*(*work).data).l).offset(i as isize)
                         * (if *((*work).delta_y).offset(i as isize)
-                            < 0 as libc::c_int as libc::c_double
+                            < 0 as ::std::os::raw::c_int as ::std::os::raw::c_double
                         {
                             *((*work).delta_y).offset(i as isize)
                         } else {
-                            0 as libc::c_int as libc::c_double
+                            0 as ::std::os::raw::c_int as ::std::os::raw::c_double
                         });
             i += 1;
         }
@@ -720,8 +719,8 @@ pub unsafe extern "C" fn is_primal_infeasible(
                 (*(*work).data).A,
                 (*work).delta_y,
                 (*work).Atdelta_y,
-                0 as libc::c_int as c_int,
-                0 as libc::c_int as c_int,
+                0 as ::std::os::raw::c_int as c_int,
+                0 as ::std::os::raw::c_int as c_int,
             );
             if (*(*work).settings).scaling != 0
                 && (*(*work).settings).scaled_termination == 0
@@ -734,10 +733,10 @@ pub unsafe extern "C" fn is_primal_infeasible(
                 );
             }
             return (vec_norm_inf((*work).Atdelta_y, (*(*work).data).n)
-                < eps_prim_inf * norm_delta_y) as libc::c_int as c_int;
+                < eps_prim_inf * norm_delta_y) as ::std::os::raw::c_int as c_int;
         }
     }
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn is_dual_infeasible(
@@ -766,14 +765,14 @@ pub unsafe extern "C" fn is_dual_infeasible(
                 (*(*work).data).P,
                 (*work).delta_x,
                 (*work).Pdelta_x,
-                0 as libc::c_int as c_int,
+                0 as ::std::os::raw::c_int as c_int,
             );
             mat_tpose_vec(
                 (*(*work).data).P,
                 (*work).delta_x,
                 (*work).Pdelta_x,
-                1 as libc::c_int as c_int,
-                1 as libc::c_int as c_int,
+                1 as ::std::os::raw::c_int as c_int,
+                1 as ::std::os::raw::c_int as c_int,
             );
             if (*(*work).settings).scaling != 0
                 && (*(*work).settings).scaled_termination == 0
@@ -792,7 +791,7 @@ pub unsafe extern "C" fn is_dual_infeasible(
                     (*(*work).data).A,
                     (*work).delta_x,
                     (*work).Adelta_x,
-                    0 as libc::c_int as c_int,
+                    0 as ::std::os::raw::c_int as c_int,
                 );
                 if (*(*work).settings).scaling != 0
                     && (*(*work).settings).scaled_termination == 0
@@ -804,7 +803,7 @@ pub unsafe extern "C" fn is_dual_infeasible(
                         (*(*work).data).m,
                     );
                 }
-                i = 0 as libc::c_int as c_int;
+                i = 0 as ::std::os::raw::c_int as c_int;
                 while i < (*(*work).data).m {
                     if *((*(*work).data).u).offset(i as isize) < OSQP_INFTY * MIN_SCALING
                         && *((*work).Adelta_x).offset(i as isize)
@@ -814,23 +813,23 @@ pub unsafe extern "C" fn is_dual_infeasible(
                             && *((*work).Adelta_x).offset(i as isize)
                                 < -eps_dual_inf * norm_delta_x
                     {
-                        return 0 as libc::c_int as c_int;
+                        return 0 as ::std::os::raw::c_int as c_int;
                     }
                     i += 1;
                 }
-                return 1 as libc::c_int as c_int;
+                return 1 as ::std::os::raw::c_int as c_int;
             }
         }
     }
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn has_solution(mut info: *mut OSQPInfo) -> c_int {
-    return ((*info).status_val != OSQP_PRIMAL_INFEASIBLE as libc::c_longlong
-        && (*info).status_val != OSQP_PRIMAL_INFEASIBLE_INACCURATE as libc::c_longlong
-        && (*info).status_val != OSQP_DUAL_INFEASIBLE as libc::c_longlong
-        && (*info).status_val != OSQP_DUAL_INFEASIBLE_INACCURATE as libc::c_longlong
-        && (*info).status_val != OSQP_NON_CVX as libc::c_longlong) as libc::c_int
+    return ((*info).status_val != OSQP_PRIMAL_INFEASIBLE as ::std::os::raw::c_longlong
+        && (*info).status_val != OSQP_PRIMAL_INFEASIBLE_INACCURATE as ::std::os::raw::c_longlong
+        && (*info).status_val != OSQP_DUAL_INFEASIBLE as ::std::os::raw::c_longlong
+        && (*info).status_val != OSQP_DUAL_INFEASIBLE_INACCURATE as ::std::os::raw::c_longlong
+        && (*info).status_val != OSQP_NON_CVX as ::std::os::raw::c_longlong) as ::std::os::raw::c_int
         as c_int;
 }
 #[no_mangle]
@@ -845,16 +844,16 @@ pub unsafe extern "C" fn store_solution(mut work: *mut OSQPWorkspace) {
     } else {
         vec_set_scalar((*(*work).solution).x, OSQP_NAN as c_float, (*(*work).data).n);
         vec_set_scalar((*(*work).solution).y, OSQP_NAN as c_float, (*(*work).data).m);
-        if (*(*work).info).status_val == OSQP_PRIMAL_INFEASIBLE as libc::c_longlong
+        if (*(*work).info).status_val == OSQP_PRIMAL_INFEASIBLE as ::std::os::raw::c_longlong
             || (*(*work).info).status_val
-                == OSQP_PRIMAL_INFEASIBLE_INACCURATE as libc::c_longlong
+                == OSQP_PRIMAL_INFEASIBLE_INACCURATE as ::std::os::raw::c_longlong
         {
             norm_vec = vec_norm_inf((*work).delta_y, (*(*work).data).m);
             vec_mult_scalar((*work).delta_y, 1.0f64 / norm_vec, (*(*work).data).m);
         }
-        if (*(*work).info).status_val == OSQP_DUAL_INFEASIBLE as libc::c_longlong
+        if (*(*work).info).status_val == OSQP_DUAL_INFEASIBLE as ::std::os::raw::c_longlong
             || (*(*work).info).status_val
-                == OSQP_DUAL_INFEASIBLE_INACCURATE as libc::c_longlong
+                == OSQP_DUAL_INFEASIBLE_INACCURATE as ::std::os::raw::c_longlong
         {
             norm_vec = vec_norm_inf((*work).delta_x, (*(*work).data).n);
             vec_mult_scalar((*work).delta_x, 1.0f64 / norm_vec, (*(*work).data).n);
@@ -897,80 +896,80 @@ pub unsafe extern "C" fn update_info(
     if compute_objective != 0 {
         *obj_val = compute_obj_val(work, x);
     }
-    if (*(*work).data).m == 0 as libc::c_int as libc::c_longlong {
+    if (*(*work).data).m == 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         *pri_res = 0.0f64;
     } else {
         *pri_res = compute_pri_res(work, x, z);
     }
     *dua_res = compute_dua_res(work, x, y);
     *run_time = osqp_toc((*work).timer);
-    (*work).summary_printed = 0 as libc::c_int as c_int;
+    (*work).summary_printed = 0 as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn reset_info(mut info: *mut OSQPInfo) {
     (*info).solve_time = 0.0f64;
     (*info).polish_time = 0.0f64;
     update_status(info, OSQP_UNSOLVED as c_int);
-    (*info).rho_updates = 0 as libc::c_int as c_int;
+    (*info).rho_updates = 0 as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn update_status(mut info: *mut OSQPInfo, mut status_val: c_int) {
     (*info).status_val = status_val;
-    if status_val == OSQP_SOLVED as libc::c_longlong {
+    if status_val == OSQP_SOLVED as ::std::os::raw::c_longlong {
         c_strcpy(
             ((*info).status).as_mut_ptr(),
-            b"solved\0" as *const u8 as *const libc::c_char,
+            b"solved\0" as *const u8 as *const ::std::os::raw::c_char,
         );
     }
-    if status_val == OSQP_SOLVED_INACCURATE as libc::c_longlong {
+    if status_val == OSQP_SOLVED_INACCURATE as ::std::os::raw::c_longlong {
         c_strcpy(
             ((*info).status).as_mut_ptr(),
-            b"solved inaccurate\0" as *const u8 as *const libc::c_char,
+            b"solved inaccurate\0" as *const u8 as *const ::std::os::raw::c_char,
         );
-    } else if status_val == OSQP_PRIMAL_INFEASIBLE as libc::c_longlong {
+    } else if status_val == OSQP_PRIMAL_INFEASIBLE as ::std::os::raw::c_longlong {
         c_strcpy(
             ((*info).status).as_mut_ptr(),
-            b"primal infeasible\0" as *const u8 as *const libc::c_char,
+            b"primal infeasible\0" as *const u8 as *const ::std::os::raw::c_char,
         );
-    } else if status_val == OSQP_PRIMAL_INFEASIBLE_INACCURATE as libc::c_longlong {
+    } else if status_val == OSQP_PRIMAL_INFEASIBLE_INACCURATE as ::std::os::raw::c_longlong {
         c_strcpy(
             ((*info).status).as_mut_ptr(),
-            b"primal infeasible inaccurate\0" as *const u8 as *const libc::c_char,
+            b"primal infeasible inaccurate\0" as *const u8 as *const ::std::os::raw::c_char,
         );
-    } else if status_val == OSQP_UNSOLVED as libc::c_longlong {
+    } else if status_val == OSQP_UNSOLVED as ::std::os::raw::c_longlong {
         c_strcpy(
             ((*info).status).as_mut_ptr(),
-            b"unsolved\0" as *const u8 as *const libc::c_char,
+            b"unsolved\0" as *const u8 as *const ::std::os::raw::c_char,
         );
-    } else if status_val == OSQP_DUAL_INFEASIBLE as libc::c_longlong {
+    } else if status_val == OSQP_DUAL_INFEASIBLE as ::std::os::raw::c_longlong {
         c_strcpy(
             ((*info).status).as_mut_ptr(),
-            b"dual infeasible\0" as *const u8 as *const libc::c_char,
+            b"dual infeasible\0" as *const u8 as *const ::std::os::raw::c_char,
         );
-    } else if status_val == OSQP_DUAL_INFEASIBLE_INACCURATE as libc::c_longlong {
+    } else if status_val == OSQP_DUAL_INFEASIBLE_INACCURATE as ::std::os::raw::c_longlong {
         c_strcpy(
             ((*info).status).as_mut_ptr(),
-            b"dual infeasible inaccurate\0" as *const u8 as *const libc::c_char,
+            b"dual infeasible inaccurate\0" as *const u8 as *const ::std::os::raw::c_char,
         );
-    } else if status_val == OSQP_MAX_ITER_REACHED as libc::c_longlong {
+    } else if status_val == OSQP_MAX_ITER_REACHED as ::std::os::raw::c_longlong {
         c_strcpy(
             ((*info).status).as_mut_ptr(),
-            b"maximum iterations reached\0" as *const u8 as *const libc::c_char,
+            b"maximum iterations reached\0" as *const u8 as *const ::std::os::raw::c_char,
         );
-    } else if status_val == OSQP_TIME_LIMIT_REACHED as libc::c_longlong {
+    } else if status_val == OSQP_TIME_LIMIT_REACHED as ::std::os::raw::c_longlong {
         c_strcpy(
             ((*info).status).as_mut_ptr(),
-            b"run time limit reached\0" as *const u8 as *const libc::c_char,
+            b"run time limit reached\0" as *const u8 as *const ::std::os::raw::c_char,
         );
-    } else if status_val == OSQP_SIGINT as libc::c_longlong {
+    } else if status_val == OSQP_SIGINT as ::std::os::raw::c_longlong {
         c_strcpy(
             ((*info).status).as_mut_ptr(),
-            b"interrupted\0" as *const u8 as *const libc::c_char,
+            b"interrupted\0" as *const u8 as *const ::std::os::raw::c_char,
         );
-    } else if status_val == OSQP_NON_CVX as libc::c_longlong {
+    } else if status_val == OSQP_NON_CVX as ::std::os::raw::c_longlong {
         c_strcpy(
             ((*info).status).as_mut_ptr(),
-            b"problem non convex\0" as *const u8 as *const libc::c_char,
+            b"problem non convex\0" as *const u8 as *const ::std::os::raw::c_char,
         );
     }
 }
@@ -990,11 +989,11 @@ pub unsafe extern "C" fn check_termination(
     let mut dual_inf_check: c_int = 0;
     let mut eps_abs: c_float = 0.;
     let mut eps_rel: c_float = 0.;
-    exitflag = 0 as libc::c_int as c_int;
-    prim_res_check = 0 as libc::c_int as c_int;
-    dual_res_check = 0 as libc::c_int as c_int;
-    prim_inf_check = 0 as libc::c_int as c_int;
-    dual_inf_check = 0 as libc::c_int as c_int;
+    exitflag = 0 as ::std::os::raw::c_int as c_int;
+    prim_res_check = 0 as ::std::os::raw::c_int as c_int;
+    dual_res_check = 0 as ::std::os::raw::c_int as c_int;
+    prim_inf_check = 0 as ::std::os::raw::c_int as c_int;
+    dual_inf_check = 0 as ::std::os::raw::c_int as c_int;
     eps_abs = (*(*work).settings).eps_abs;
     eps_rel = (*(*work).settings).eps_rel;
     eps_prim_inf = (*(*work).settings).eps_prim_inf;
@@ -1002,27 +1001,27 @@ pub unsafe extern "C" fn check_termination(
     if (*(*work).info).pri_res > OSQP_INFTY || (*(*work).info).dua_res > OSQP_INFTY {
         update_status((*work).info, OSQP_NON_CVX as c_int);
         (*(*work).info).obj_val = OSQP_NAN as c_float;
-        return 1 as libc::c_int as c_int;
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if approximate != 0 {
-        eps_abs *= 10 as libc::c_int as libc::c_double;
-        eps_rel *= 10 as libc::c_int as libc::c_double;
-        eps_prim_inf *= 10 as libc::c_int as libc::c_double;
-        eps_dual_inf *= 10 as libc::c_int as libc::c_double;
+        eps_abs *= 10 as ::std::os::raw::c_int as ::std::os::raw::c_double;
+        eps_rel *= 10 as ::std::os::raw::c_int as ::std::os::raw::c_double;
+        eps_prim_inf *= 10 as ::std::os::raw::c_int as ::std::os::raw::c_double;
+        eps_dual_inf *= 10 as ::std::os::raw::c_int as ::std::os::raw::c_double;
     }
-    if (*(*work).data).m == 0 as libc::c_int as libc::c_longlong {
-        prim_res_check = 1 as libc::c_int as c_int;
+    if (*(*work).data).m == 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
+        prim_res_check = 1 as ::std::os::raw::c_int as c_int;
     } else {
         eps_prim = compute_pri_tol(work, eps_abs, eps_rel);
         if (*(*work).info).pri_res < eps_prim {
-            prim_res_check = 1 as libc::c_int as c_int;
+            prim_res_check = 1 as ::std::os::raw::c_int as c_int;
         } else {
             prim_inf_check = is_primal_infeasible(work, eps_prim_inf);
         }
     }
     eps_dual = compute_dua_tol(work, eps_abs, eps_rel);
     if (*(*work).info).dua_res < eps_dual {
-        dual_res_check = 1 as libc::c_int as c_int;
+        dual_res_check = 1 as ::std::os::raw::c_int as c_int;
     } else {
         dual_inf_check = is_dual_infeasible(work, eps_dual_inf);
     }
@@ -1032,7 +1031,7 @@ pub unsafe extern "C" fn check_termination(
         } else {
             update_status((*work).info, OSQP_SOLVED as c_int);
         }
-        exitflag = 1 as libc::c_int as c_int;
+        exitflag = 1 as ::std::os::raw::c_int as c_int;
     } else if prim_inf_check != 0 {
         if approximate != 0 {
             update_status((*work).info, OSQP_PRIMAL_INFEASIBLE_INACCURATE as c_int);
@@ -1050,7 +1049,7 @@ pub unsafe extern "C" fn check_termination(
             );
         }
         (*(*work).info).obj_val = OSQP_INFTY;
-        exitflag = 1 as libc::c_int as c_int;
+        exitflag = 1 as ::std::os::raw::c_int as c_int;
     } else if dual_inf_check != 0 {
         if approximate != 0 {
             update_status((*work).info, OSQP_DUAL_INFEASIBLE_INACCURATE as c_int);
@@ -1068,7 +1067,7 @@ pub unsafe extern "C" fn check_termination(
             );
         }
         (*(*work).info).obj_val = -OSQP_INFTY;
-        exitflag = 1 as libc::c_int as c_int;
+        exitflag = 1 as ::std::os::raw::c_int as c_int;
     }
     return exitflag;
 }
@@ -1078,127 +1077,127 @@ pub unsafe extern "C" fn validate_data(mut data: *const OSQPData) -> c_int {
     let mut ptr: c_int = 0;
     if data.is_null() {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 14],
-                &[libc::c_char; 14],
+                &[::std::os::raw::c_char; 14],
             >(b"validate_data\0"))
                 .as_ptr(),
         );
-        printf(b"Missing data\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"Missing data\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if ((*data).P).is_null() {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 14],
-                &[libc::c_char; 14],
+                &[::std::os::raw::c_char; 14],
             >(b"validate_data\0"))
                 .as_ptr(),
         );
-        printf(b"Missing matrix P\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"Missing matrix P\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if ((*data).A).is_null() {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 14],
-                &[libc::c_char; 14],
+                &[::std::os::raw::c_char; 14],
             >(b"validate_data\0"))
                 .as_ptr(),
         );
-        printf(b"Missing matrix A\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"Missing matrix A\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if ((*data).q).is_null() {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 14],
-                &[libc::c_char; 14],
+                &[::std::os::raw::c_char; 14],
             >(b"validate_data\0"))
                 .as_ptr(),
         );
-        printf(b"Missing vector q\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"Missing vector q\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    if (*data).n <= 0 as libc::c_int as libc::c_longlong
-        || (*data).m < 0 as libc::c_int as libc::c_longlong
+    if (*data).n <= 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
+        || (*data).m < 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
     {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 14],
-                &[libc::c_char; 14],
+                &[::std::os::raw::c_char; 14],
             >(b"validate_data\0"))
                 .as_ptr(),
         );
         printf(
             b"n must be positive and m nonnegative; n = %i, m = %i\0" as *const u8
-                as *const libc::c_char,
-            (*data).n as libc::c_int,
-            (*data).m as libc::c_int,
+                as *const ::std::os::raw::c_char,
+            (*data).n as ::std::os::raw::c_int,
+            (*data).m as ::std::os::raw::c_int,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*(*data).P).m != (*data).n {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 14],
-                &[libc::c_char; 14],
+                &[::std::os::raw::c_char; 14],
             >(b"validate_data\0"))
                 .as_ptr(),
         );
         printf(
             b"P does not have dimension n x n with n = %i\0" as *const u8
-                as *const libc::c_char,
-            (*data).n as libc::c_int,
+                as *const ::std::os::raw::c_char,
+            (*data).n as ::std::os::raw::c_int,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*(*data).P).m != (*(*data).P).n {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 14],
-                &[libc::c_char; 14],
+                &[::std::os::raw::c_char; 14],
             >(b"validate_data\0"))
                 .as_ptr(),
         );
-        printf(b"P is not square\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"P is not square\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*data).n {
         ptr = *((*(*data).P).p).offset(j as isize);
         while ptr
             < *((*(*data).P).p)
-                .offset((j + 1 as libc::c_int as libc::c_longlong) as isize)
+                .offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize)
         {
             if *((*(*data).P).i).offset(ptr as isize) > j {
                 printf(
-                    b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+                    b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
                     (*::std::mem::transmute::<
                         &[u8; 14],
-                        &[libc::c_char; 14],
+                        &[::std::os::raw::c_char; 14],
                     >(b"validate_data\0"))
                         .as_ptr(),
                 );
                 printf(
-                    b"P is not upper triangular\0" as *const u8 as *const libc::c_char,
+                    b"P is not upper triangular\0" as *const u8 as *const ::std::os::raw::c_char,
                 );
-                printf(b"\n\0" as *const u8 as *const libc::c_char);
-                return 1 as libc::c_int as c_int;
+                printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+                return 1 as ::std::os::raw::c_int as c_int;
             }
             ptr += 1;
         }
@@ -1206,392 +1205,392 @@ pub unsafe extern "C" fn validate_data(mut data: *const OSQPData) -> c_int {
     }
     if (*(*data).A).m != (*data).m || (*(*data).A).n != (*data).n {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 14],
-                &[libc::c_char; 14],
+                &[::std::os::raw::c_char; 14],
             >(b"validate_data\0"))
                 .as_ptr(),
         );
         printf(
-            b"A does not have dimension %i x %i\0" as *const u8 as *const libc::c_char,
-            (*data).m as libc::c_int,
-            (*data).n as libc::c_int,
+            b"A does not have dimension %i x %i\0" as *const u8 as *const ::std::os::raw::c_char,
+            (*data).m as ::std::os::raw::c_int,
+            (*data).n as ::std::os::raw::c_int,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*data).m {
         if *((*data).l).offset(j as isize) > *((*data).u).offset(j as isize) {
             printf(
-                b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+                b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
                 (*::std::mem::transmute::<
                     &[u8; 14],
-                    &[libc::c_char; 14],
+                    &[::std::os::raw::c_char; 14],
                 >(b"validate_data\0"))
                     .as_ptr(),
             );
             printf(
                 b"Lower bound at index %d is greater than upper bound: %.4e > %.4e\0"
-                    as *const u8 as *const libc::c_char,
-                j as libc::c_int,
+                    as *const u8 as *const ::std::os::raw::c_char,
+                j as ::std::os::raw::c_int,
                 *((*data).l).offset(j as isize),
                 *((*data).u).offset(j as isize),
             );
-            printf(b"\n\0" as *const u8 as *const libc::c_char);
-            return 1 as libc::c_int as c_int;
+            printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+            return 1 as ::std::os::raw::c_int as c_int;
         }
         j += 1;
     }
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn validate_linsys_solver(mut linsys_solver: c_int) -> c_int {
-    if linsys_solver != QDLDL_SOLVER as libc::c_int as libc::c_longlong
-        && linsys_solver != MKL_PARDISO_SOLVER as libc::c_int as libc::c_longlong
+    if linsys_solver != QDLDL_SOLVER as ::std::os::raw::c_int as ::std::os::raw::c_longlong
+        && linsys_solver != MKL_PARDISO_SOLVER as ::std::os::raw::c_int as ::std::os::raw::c_longlong
     {
-        return 1 as libc::c_int as c_int;
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn validate_settings(mut settings: *const OSQPSettings) -> c_int {
     if settings.is_null() {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
-        printf(b"Missing settings!\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"Missing settings!\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    if (*settings).scaling < 0 as libc::c_int as libc::c_longlong {
+    if (*settings).scaling < 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
-        printf(b"scaling must be nonnegative\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"scaling must be nonnegative\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    if (*settings).adaptive_rho != 0 as libc::c_int as libc::c_longlong
-        && (*settings).adaptive_rho != 1 as libc::c_int as libc::c_longlong
+    if (*settings).adaptive_rho != 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
+        && (*settings).adaptive_rho != 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
     {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
         printf(
-            b"adaptive_rho must be either 0 or 1\0" as *const u8 as *const libc::c_char,
+            b"adaptive_rho must be either 0 or 1\0" as *const u8 as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    if (*settings).adaptive_rho_interval < 0 as libc::c_int as libc::c_longlong {
+    if (*settings).adaptive_rho_interval < 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
         printf(
             b"adaptive_rho_interval must be nonnegative\0" as *const u8
-                as *const libc::c_char,
+                as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    if (*settings).adaptive_rho_fraction <= 0 as libc::c_int as libc::c_double {
+    if (*settings).adaptive_rho_fraction <= 0 as ::std::os::raw::c_int as ::std::os::raw::c_double {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
         printf(
             b"adaptive_rho_fraction must be positive\0" as *const u8
-                as *const libc::c_char,
+                as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*settings).adaptive_rho_tolerance < 1.0f64 {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
         printf(
-            b"adaptive_rho_tolerance must be >= 1\0" as *const u8 as *const libc::c_char,
+            b"adaptive_rho_tolerance must be >= 1\0" as *const u8 as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    if (*settings).polish_refine_iter < 0 as libc::c_int as libc::c_longlong {
+    if (*settings).polish_refine_iter < 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
         printf(
             b"polish_refine_iter must be nonnegative\0" as *const u8
-                as *const libc::c_char,
+                as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*settings).rho <= 0.0f64 {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
-        printf(b"rho must be positive\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"rho must be positive\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*settings).sigma <= 0.0f64 {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
-        printf(b"sigma must be positive\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"sigma must be positive\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*settings).delta <= 0.0f64 {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
-        printf(b"delta must be positive\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"delta must be positive\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    if (*settings).max_iter <= 0 as libc::c_int as libc::c_longlong {
+    if (*settings).max_iter <= 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
-        printf(b"max_iter must be positive\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"max_iter must be positive\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*settings).eps_abs < 0.0f64 {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
-        printf(b"eps_abs must be nonnegative\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"eps_abs must be nonnegative\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*settings).eps_rel < 0.0f64 {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
-        printf(b"eps_rel must be nonnegative\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"eps_rel must be nonnegative\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*settings).eps_rel == 0.0f64 && (*settings).eps_abs == 0.0f64 {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
         printf(
             b"at least one of eps_abs and eps_rel must be positive\0" as *const u8
-                as *const libc::c_char,
+                as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*settings).eps_prim_inf <= 0.0f64 {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
-        printf(b"eps_prim_inf must be positive\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"eps_prim_inf must be positive\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*settings).eps_dual_inf <= 0.0f64 {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
-        printf(b"eps_dual_inf must be positive\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"eps_dual_inf must be positive\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*settings).alpha <= 0.0f64 || (*settings).alpha >= 2.0f64 {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
         printf(
             b"alpha must be strictly between 0 and 2\0" as *const u8
-                as *const libc::c_char,
+                as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if validate_linsys_solver((*settings).linsys_solver as c_int) != 0 {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
-        printf(b"linsys_solver not recognized\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"linsys_solver not recognized\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    if (*settings).verbose != 0 as libc::c_int as libc::c_longlong
-        && (*settings).verbose != 1 as libc::c_int as libc::c_longlong
+    if (*settings).verbose != 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
+        && (*settings).verbose != 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
     {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
-        printf(b"verbose must be either 0 or 1\0" as *const u8 as *const libc::c_char);
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"verbose must be either 0 or 1\0" as *const u8 as *const ::std::os::raw::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    if (*settings).scaled_termination != 0 as libc::c_int as libc::c_longlong
-        && (*settings).scaled_termination != 1 as libc::c_int as libc::c_longlong
+    if (*settings).scaled_termination != 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
+        && (*settings).scaled_termination != 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
     {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
         printf(
             b"scaled_termination must be either 0 or 1\0" as *const u8
-                as *const libc::c_char,
+                as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    if (*settings).check_termination < 0 as libc::c_int as libc::c_longlong {
+    if (*settings).check_termination < 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
         printf(
             b"check_termination must be nonnegative\0" as *const u8
-                as *const libc::c_char,
+                as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    if (*settings).warm_start != 0 as libc::c_int as libc::c_longlong
-        && (*settings).warm_start != 1 as libc::c_int as libc::c_longlong
+    if (*settings).warm_start != 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
+        && (*settings).warm_start != 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
     {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
         printf(
-            b"warm_start must be either 0 or 1\0" as *const u8 as *const libc::c_char,
+            b"warm_start must be either 0 or 1\0" as *const u8 as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     if (*settings).time_limit < 0.0f64 {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 18],
-                &[libc::c_char; 18],
+                &[::std::os::raw::c_char; 18],
             >(b"validate_settings\0"))
                 .as_ptr(),
         );
         printf(
-            b"time_limit must be nonnegative\n\0" as *const u8 as *const libc::c_char,
+            b"time_limit must be nonnegative\n\0" as *const u8 as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        return 1 as libc::c_int as c_int;
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        return 1 as ::std::os::raw::c_int as c_int;
     }
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }

@@ -1,7 +1,6 @@
-use ::libc;
 extern "C" {
-    fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
-    fn free(_: *mut libc::c_void);
+    fn malloc(_: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void;
+    fn free(_: *mut ::std::os::raw::c_void);
     fn vec_copy(a: *mut c_float, n: c_int) -> *mut c_float;
     fn prea_vec_copy(a: *const c_float, b: *mut c_float, n: c_int);
     fn vec_set_scalar(a: *mut c_float, sc: c_float, n: c_int);
@@ -42,15 +41,15 @@ extern "C" {
     fn project_normalcone(work: *mut OSQPWorkspace, z: *mut c_float, y: *mut c_float);
     fn _osqp_error(
         error_code: osqp_error_type,
-        function_name: *const libc::c_char,
+        function_name: *const ::std::os::raw::c_char,
     ) -> c_int;
 }
-pub type c_int = libc::c_longlong;
-pub type c_float = libc::c_double;
-pub type linsys_solver_type = libc::c_uint;
+pub type c_int = ::std::os::raw::c_longlong;
+pub type c_float = ::std::os::raw::c_double;
+pub type linsys_solver_type = ::std::os::raw::c_uint;
 pub const MKL_PARDISO_SOLVER: linsys_solver_type = 1;
 pub const QDLDL_SOLVER: linsys_solver_type = 0;
-pub type osqp_error_type = libc::c_uint;
+pub type osqp_error_type = ::std::os::raw::c_uint;
 pub const OSQP_WORKSPACE_NOT_INIT_ERROR: osqp_error_type = 7;
 pub const OSQP_MEM_ALLOC_ERROR: osqp_error_type = 6;
 pub const OSQP_NONCVX_ERROR: osqp_error_type = 5;
@@ -98,8 +97,8 @@ pub struct mach_timebase_info {
     pub numer: uint32_t,
     pub denom: uint32_t,
 }
-pub type uint32_t = libc::c_uint;
-pub type uint64_t = libc::c_ulonglong;
+pub type uint32_t = ::std::os::raw::c_uint;
+pub type uint64_t = ::std::os::raw::c_ulonglong;
 pub type OSQPTimer = OSQP_TIMER;
 #[derive(Copy, Clone)]
 #[repr(C)]
@@ -121,7 +120,7 @@ pub struct OSQPSolution {
 #[repr(C)]
 pub struct OSQPInfo {
     pub iter: c_int,
-    pub status: [libc::c_char; 32],
+    pub status: [::std::os::raw::c_char; 32],
     pub status_val: c_int,
     pub status_polish: c_int,
     pub obj_val: c_float,
@@ -225,16 +224,16 @@ pub struct OSQPWorkspace {
     pub rho_update_from_solve: c_int,
     pub summary_printed: c_int,
 }
-pub const OSQP_NULL: libc::c_int = 0 as libc::c_int;
-pub const c_malloc: unsafe extern "C" fn(libc::c_ulong) -> *mut libc::c_void = malloc;
-pub const c_free: unsafe extern "C" fn(*mut libc::c_void) -> () = free;
+pub const OSQP_NULL: ::std::os::raw::c_int = 0 as ::std::os::raw::c_int;
+pub const c_malloc: unsafe extern "C" fn(::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void = malloc;
+pub const c_free: unsafe extern "C" fn(*mut ::std::os::raw::c_void) -> () = free;
 unsafe extern "C" fn form_Ared(mut work: *mut OSQPWorkspace) -> c_int {
     let mut j: c_int = 0;
     let mut ptr: c_int = 0;
-    let mut Ared_nnz: c_int = 0 as libc::c_int as c_int;
-    (*(*work).pol).n_low = 0 as libc::c_int as c_int;
-    (*(*work).pol).n_upp = 0 as libc::c_int as c_int;
-    j = 0 as libc::c_int as c_int;
+    let mut Ared_nnz: c_int = 0 as ::std::os::raw::c_int as c_int;
+    (*(*work).pol).n_low = 0 as ::std::os::raw::c_int as c_int;
+    (*(*work).pol).n_upp = 0 as ::std::os::raw::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*(*work).data).m {
         if *((*work).z).offset(j as isize) - *((*(*work).data).l).offset(j as isize)
             < -*((*work).y).offset(j as isize)
@@ -246,11 +245,11 @@ unsafe extern "C" fn form_Ared(mut work: *mut OSQPWorkspace) -> c_int {
             *((*(*work).pol).A_to_Alow).offset(j as isize) = fresh1;
         } else {
             *((*(*work).pol).A_to_Alow)
-                .offset(j as isize) = -(1 as libc::c_int) as c_int;
+                .offset(j as isize) = -(1 as ::std::os::raw::c_int) as c_int;
         }
         j += 1;
     }
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*(*work).data).m {
         if *((*(*work).data).u).offset(j as isize) - *((*work).z).offset(j as isize)
             < *((*work).y).offset(j as isize)
@@ -262,39 +261,39 @@ unsafe extern "C" fn form_Ared(mut work: *mut OSQPWorkspace) -> c_int {
             *((*(*work).pol).A_to_Aupp).offset(j as isize) = fresh3;
         } else {
             *((*(*work).pol).A_to_Aupp)
-                .offset(j as isize) = -(1 as libc::c_int) as c_int;
+                .offset(j as isize) = -(1 as ::std::os::raw::c_int) as c_int;
         }
         j += 1;
     }
     if (*(*work).pol).n_low + (*(*work).pol).n_upp
-        == 0 as libc::c_int as libc::c_longlong
+        == 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
     {
         let ref mut fresh4 = (*(*work).pol).Ared;
         *fresh4 = csc_spalloc(
-            0 as libc::c_int as c_int,
+            0 as ::std::os::raw::c_int as c_int,
             (*(*work).data).n,
-            0 as libc::c_int as c_int,
-            1 as libc::c_int as c_int,
-            0 as libc::c_int as c_int,
+            0 as ::std::os::raw::c_int as c_int,
+            1 as ::std::os::raw::c_int as c_int,
+            0 as ::std::os::raw::c_int as c_int,
         );
         if ((*(*work).pol).Ared).is_null() {
-            return -(1 as libc::c_int) as c_int;
+            return -(1 as ::std::os::raw::c_int) as c_int;
         }
         int_vec_set_scalar(
             (*(*(*work).pol).Ared).p,
-            0 as libc::c_int as c_int,
-            (*(*work).data).n + 1 as libc::c_int as libc::c_longlong,
+            0 as ::std::os::raw::c_int as c_int,
+            (*(*work).data).n + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong,
         );
-        return 0 as libc::c_int as c_int;
+        return 0 as ::std::os::raw::c_int as c_int;
     }
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < *((*(*(*work).data).A).p).offset((*(*(*work).data).A).n as isize) {
         if *((*(*work).pol).A_to_Alow)
             .offset(*((*(*(*work).data).A).i).offset(j as isize) as isize)
-            != -(1 as libc::c_int) as libc::c_longlong
+            != -(1 as ::std::os::raw::c_int) as ::std::os::raw::c_longlong
             || *((*(*work).pol).A_to_Aupp)
                 .offset(*((*(*(*work).data).A).i).offset(j as isize) as isize)
-                != -(1 as libc::c_int) as libc::c_longlong
+                != -(1 as ::std::os::raw::c_int) as ::std::os::raw::c_longlong
         {
             Ared_nnz += 1;
         }
@@ -305,24 +304,24 @@ unsafe extern "C" fn form_Ared(mut work: *mut OSQPWorkspace) -> c_int {
         (*(*work).pol).n_low + (*(*work).pol).n_upp,
         (*(*work).data).n,
         Ared_nnz,
-        1 as libc::c_int as c_int,
-        0 as libc::c_int as c_int,
+        1 as ::std::os::raw::c_int as c_int,
+        0 as ::std::os::raw::c_int as c_int,
     );
     if ((*(*work).pol).Ared).is_null() {
-        return -(1 as libc::c_int) as c_int;
+        return -(1 as ::std::os::raw::c_int) as c_int;
     }
-    Ared_nnz = 0 as libc::c_int as c_int;
-    j = 0 as libc::c_int as c_int;
+    Ared_nnz = 0 as ::std::os::raw::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*(*work).data).n {
         *((*(*(*work).pol).Ared).p).offset(j as isize) = Ared_nnz;
         ptr = *((*(*(*work).data).A).p).offset(j as isize);
         while ptr
             < *((*(*(*work).data).A).p)
-                .offset((j + 1 as libc::c_int as libc::c_longlong) as isize)
+                .offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize)
         {
             if *((*(*work).pol).A_to_Alow)
                 .offset(*((*(*(*work).data).A).i).offset(ptr as isize) as isize)
-                != -(1 as libc::c_int) as libc::c_longlong
+                != -(1 as ::std::os::raw::c_int) as ::std::os::raw::c_longlong
             {
                 *((*(*(*work).pol).Ared).i)
                     .offset(
@@ -337,7 +336,7 @@ unsafe extern "C" fn form_Ared(mut work: *mut OSQPWorkspace) -> c_int {
                     ) = *((*(*(*work).data).A).x).offset(ptr as isize);
             } else if *((*(*work).pol).A_to_Aupp)
                     .offset(*((*(*(*work).data).A).i).offset(ptr as isize) as isize)
-                    != -(1 as libc::c_int) as libc::c_longlong
+                    != -(1 as ::std::os::raw::c_int) as ::std::os::raw::c_longlong
                 {
                 *((*(*(*work).pol).Ared).i)
                     .offset(
@@ -361,12 +360,12 @@ unsafe extern "C" fn form_Ared(mut work: *mut OSQPWorkspace) -> c_int {
 }
 unsafe extern "C" fn form_rhs_red(mut work: *mut OSQPWorkspace, mut rhs: *mut c_float) {
     let mut j: c_int = 0;
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*(*work).data).n {
         *rhs.offset(j as isize) = -*((*(*work).data).q).offset(j as isize);
         j += 1;
     }
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*(*work).pol).n_low {
         *rhs
             .offset(
@@ -375,7 +374,7 @@ unsafe extern "C" fn form_rhs_red(mut work: *mut OSQPWorkspace, mut rhs: *mut c_
             .offset(*((*(*work).pol).Alow_to_A).offset(j as isize) as isize);
         j += 1;
     }
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*(*work).pol).n_upp {
         *rhs
             .offset(
@@ -395,48 +394,48 @@ unsafe extern "C" fn iterative_refinement(
     let mut j: c_int = 0;
     let mut n: c_int = 0;
     let mut rhs: *mut c_float = 0 as *mut c_float;
-    if (*(*work).settings).polish_refine_iter > 0 as libc::c_int as libc::c_longlong {
+    if (*(*work).settings).polish_refine_iter > 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         n = (*(*work).data).n + (*(*(*work).pol).Ared).m;
         rhs = malloc(
-            (::std::mem::size_of::<c_float>() as libc::c_ulong as libc::c_ulonglong)
-                .wrapping_mul(n as libc::c_ulonglong) as libc::c_ulong,
+            (::std::mem::size_of::<c_float>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+                .wrapping_mul(n as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
         ) as *mut c_float;
         if rhs.is_null() {
             return _osqp_error(
                 OSQP_MEM_ALLOC_ERROR,
                 (*::std::mem::transmute::<
                     &[u8; 21],
-                    &[libc::c_char; 21],
+                    &[::std::os::raw::c_char; 21],
                 >(b"iterative_refinement\0"))
                     .as_ptr(),
             )
         } else {
-            i = 0 as libc::c_int as c_int;
+            i = 0 as ::std::os::raw::c_int as c_int;
             while i < (*(*work).settings).polish_refine_iter {
                 prea_vec_copy(b, rhs, n);
-                mat_vec((*(*work).data).P, z, rhs, -(1 as libc::c_int) as c_int);
+                mat_vec((*(*work).data).P, z, rhs, -(1 as ::std::os::raw::c_int) as c_int);
                 mat_tpose_vec(
                     (*(*work).data).P,
                     z,
                     rhs,
-                    -(1 as libc::c_int) as c_int,
-                    1 as libc::c_int as c_int,
+                    -(1 as ::std::os::raw::c_int) as c_int,
+                    1 as ::std::os::raw::c_int as c_int,
                 );
                 mat_tpose_vec(
                     (*(*work).pol).Ared,
                     z.offset((*(*work).data).n as isize),
                     rhs,
-                    -(1 as libc::c_int) as c_int,
-                    0 as libc::c_int as c_int,
+                    -(1 as ::std::os::raw::c_int) as c_int,
+                    0 as ::std::os::raw::c_int as c_int,
                 );
                 mat_vec(
                     (*(*work).pol).Ared,
                     z,
                     rhs.offset((*(*work).data).n as isize),
-                    -(1 as libc::c_int) as c_int,
+                    -(1 as ::std::os::raw::c_int) as c_int,
                 );
                 ((*p).solve).expect("non-null function pointer")(p, rhs);
-                j = 0 as libc::c_int as c_int;
+                j = 0 as ::std::os::raw::c_int as c_int;
                 while j < n {
                     let ref mut fresh8 = *z.offset(j as isize);
                     *fresh8 += *rhs.offset(j as isize);
@@ -446,10 +445,10 @@ unsafe extern "C" fn iterative_refinement(
             }
         }
         if !rhs.is_null() {
-            free(rhs as *mut libc::c_void);
+            free(rhs as *mut ::std::os::raw::c_void);
         }
     }
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }
 unsafe extern "C" fn get_ypol_from_yred(
     mut work: *mut OSQPWorkspace,
@@ -457,15 +456,15 @@ unsafe extern "C" fn get_ypol_from_yred(
 ) {
     let mut j: c_int = 0;
     if (*(*work).pol).n_low + (*(*work).pol).n_upp
-        == 0 as libc::c_int as libc::c_longlong
+        == 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong
     {
         vec_set_scalar((*(*work).pol).y, 0.0f64, (*(*work).data).m);
         return;
     }
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*(*work).data).m {
         if *((*(*work).pol).A_to_Alow).offset(j as isize)
-            != -(1 as libc::c_int) as libc::c_longlong
+            != -(1 as ::std::os::raw::c_int) as ::std::os::raw::c_longlong
         {
             *((*(*work).pol).y)
                 .offset(
@@ -473,7 +472,7 @@ unsafe extern "C" fn get_ypol_from_yred(
                 ) = *yred
                 .offset(*((*(*work).pol).A_to_Alow).offset(j as isize) as isize);
         } else if *((*(*work).pol).A_to_Aupp).offset(j as isize)
-                != -(1 as libc::c_int) as libc::c_longlong
+                != -(1 as ::std::os::raw::c_int) as ::std::os::raw::c_longlong
             {
             *((*(*work).pol).y)
                 .offset(
@@ -499,9 +498,9 @@ pub unsafe extern "C" fn polish(mut work: *mut OSQPWorkspace) -> c_int {
     let mut pol_sol: *mut c_float = 0 as *mut c_float;
     osqp_tic((*work).timer);
     mred = form_Ared(work);
-    if mred < 0 as libc::c_int as libc::c_longlong {
-        (*(*work).info).status_polish = -(1 as libc::c_int) as c_int;
-        return -(1 as libc::c_int) as c_int;
+    if mred < 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
+        (*(*work).info).status_polish = -(1 as ::std::os::raw::c_int) as c_int;
+        return -(1 as ::std::os::raw::c_int) as c_int;
     }
     exitflag = init_linsys_solver(
         &mut plsh,
@@ -510,68 +509,68 @@ pub unsafe extern "C" fn polish(mut work: *mut OSQPWorkspace) -> c_int {
         (*(*work).settings).delta,
         OSQP_NULL as *const c_float,
         (*(*work).settings).linsys_solver,
-        1 as libc::c_int as c_int,
+        1 as ::std::os::raw::c_int as c_int,
     );
     if exitflag != 0 {
-        (*(*work).info).status_polish = -(1 as libc::c_int) as c_int;
+        (*(*work).info).status_polish = -(1 as ::std::os::raw::c_int) as c_int;
         if !((*(*work).pol).Ared).is_null() {
             csc_spfree((*(*work).pol).Ared);
         }
-        return 1 as libc::c_int as c_int;
+        return 1 as ::std::os::raw::c_int as c_int;
     }
     rhs_red = malloc(
-        (::std::mem::size_of::<c_float>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul(((*(*work).data).n + mred) as libc::c_ulonglong)
-            as libc::c_ulong,
+        (::std::mem::size_of::<c_float>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul(((*(*work).data).n + mred) as ::std::os::raw::c_ulonglong)
+            as ::std::os::raw::c_ulong,
     ) as *mut c_float;
     if rhs_red.is_null() {
-        (*(*work).info).status_polish = -(1 as libc::c_int) as c_int;
+        (*(*work).info).status_polish = -(1 as ::std::os::raw::c_int) as c_int;
         csc_spfree((*(*work).pol).Ared);
-        return -(1 as libc::c_int) as c_int;
+        return -(1 as ::std::os::raw::c_int) as c_int;
     }
     form_rhs_red(work, rhs_red);
     pol_sol = vec_copy(rhs_red, (*(*work).data).n + mred);
     if pol_sol.is_null() {
-        (*(*work).info).status_polish = -(1 as libc::c_int) as c_int;
+        (*(*work).info).status_polish = -(1 as ::std::os::raw::c_int) as c_int;
         csc_spfree((*(*work).pol).Ared);
-        free(rhs_red as *mut libc::c_void);
-        return -(1 as libc::c_int) as c_int;
+        free(rhs_red as *mut ::std::os::raw::c_void);
+        return -(1 as ::std::os::raw::c_int) as c_int;
     }
     ((*plsh).solve).expect("non-null function pointer")(plsh, pol_sol);
     exitflag = iterative_refinement(work, plsh, pol_sol, rhs_red);
     if exitflag != 0 {
-        (*(*work).info).status_polish = -(1 as libc::c_int) as c_int;
+        (*(*work).info).status_polish = -(1 as ::std::os::raw::c_int) as c_int;
         csc_spfree((*(*work).pol).Ared);
-        free(rhs_red as *mut libc::c_void);
-        free(pol_sol as *mut libc::c_void);
-        return -(1 as libc::c_int) as c_int;
+        free(rhs_red as *mut ::std::os::raw::c_void);
+        free(pol_sol as *mut ::std::os::raw::c_void);
+        return -(1 as ::std::os::raw::c_int) as c_int;
     }
     prea_vec_copy(pol_sol, (*(*work).pol).x, (*(*work).data).n);
     mat_vec(
         (*(*work).data).A,
         (*(*work).pol).x,
         (*(*work).pol).z,
-        0 as libc::c_int as c_int,
+        0 as ::std::os::raw::c_int as c_int,
     );
     get_ypol_from_yred(work, pol_sol.offset((*(*work).data).n as isize));
     project_normalcone(work, (*(*work).pol).z, (*(*work).pol).y);
     update_info(
         work,
-        0 as libc::c_int as c_int,
-        1 as libc::c_int as c_int,
-        1 as libc::c_int as c_int,
+        0 as ::std::os::raw::c_int as c_int,
+        1 as ::std::os::raw::c_int as c_int,
+        1 as ::std::os::raw::c_int as c_int,
     );
     polish_successful = ((*(*work).pol).pri_res < (*(*work).info).pri_res
         && (*(*work).pol).dua_res < (*(*work).info).dua_res
         || (*(*work).pol).pri_res < (*(*work).info).pri_res
             && (*(*work).info).dua_res < 1e-10f64
         || (*(*work).pol).dua_res < (*(*work).info).dua_res
-            && (*(*work).info).pri_res < 1e-10f64) as libc::c_int as c_int;
+            && (*(*work).info).pri_res < 1e-10f64) as ::std::os::raw::c_int as c_int;
     if polish_successful != 0 {
         (*(*work).info).obj_val = (*(*work).pol).obj_val;
         (*(*work).info).pri_res = (*(*work).pol).pri_res;
         (*(*work).info).dua_res = (*(*work).pol).dua_res;
-        (*(*work).info).status_polish = 1 as libc::c_int as c_int;
+        (*(*work).info).status_polish = 1 as ::std::os::raw::c_int as c_int;
         prea_vec_copy((*(*work).pol).x, (*work).x, (*(*work).data).n);
         prea_vec_copy((*(*work).pol).z, (*work).z, (*(*work).data).m);
         prea_vec_copy((*(*work).pol).y, (*work).y, (*(*work).data).m);
@@ -579,11 +578,11 @@ pub unsafe extern "C" fn polish(mut work: *mut OSQPWorkspace) -> c_int {
             print_polish(work);
         }
     } else {
-        (*(*work).info).status_polish = -(1 as libc::c_int) as c_int;
+        (*(*work).info).status_polish = -(1 as ::std::os::raw::c_int) as c_int;
     }
     ((*plsh).free).expect("non-null function pointer")(plsh);
     csc_spfree((*(*work).pol).Ared);
-    free(rhs_red as *mut libc::c_void);
-    free(pol_sol as *mut libc::c_void);
-    return 0 as libc::c_int as c_int;
+    free(rhs_red as *mut ::std::os::raw::c_void);
+    free(pol_sol as *mut ::std::os::raw::c_void);
+    return 0 as ::std::os::raw::c_int as c_int;
 }

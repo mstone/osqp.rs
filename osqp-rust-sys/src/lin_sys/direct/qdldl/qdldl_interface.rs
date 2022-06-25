@@ -1,9 +1,8 @@
-use ::libc;
 extern "C" {
-    fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
-    fn calloc(_: libc::c_ulong, _: libc::c_ulong) -> *mut libc::c_void;
-    fn free(_: *mut libc::c_void);
-    fn printf(_: *const libc::c_char, _: ...) -> libc::c_int;
+    fn malloc(_: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void;
+    fn calloc(_: ::std::os::raw::c_ulong, _: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void;
+    fn free(_: *mut ::std::os::raw::c_void);
+    fn printf(_: *const ::std::os::raw::c_char, _: ...) -> ::std::os::raw::c_int;
     fn QDLDL_etree(
         n: QDLDL_int,
         Ap: *const QDLDL_int,
@@ -37,13 +36,13 @@ extern "C" {
         x: *mut QDLDL_float,
     );
     fn amd_l_order(
-        n: libc::c_longlong,
-        Ap: *const libc::c_longlong,
-        Ai: *const libc::c_longlong,
-        P: *mut libc::c_longlong,
+        n: ::std::os::raw::c_longlong,
+        Ap: *const ::std::os::raw::c_longlong,
+        Ai: *const ::std::os::raw::c_longlong,
+        P: *mut ::std::os::raw::c_longlong,
         Control: *mut c_float,
         Info: *mut c_float,
-    ) -> libc::c_longlong;
+    ) -> ::std::os::raw::c_longlong;
     fn csc_spfree(A: *mut csc);
     fn csc_pinv(p: *const c_int, n: c_int) -> *mut c_int;
     fn csc_symperm(
@@ -80,15 +79,15 @@ extern "C" {
         Pdiag_n: c_int,
     );
 }
-pub type c_int = libc::c_longlong;
-pub type c_float = libc::c_double;
-pub type QDLDL_int = libc::c_longlong;
-pub type QDLDL_float = libc::c_double;
-pub type QDLDL_bool = libc::c_uchar;
-pub type linsys_solver_type = libc::c_uint;
+pub type c_int = ::std::os::raw::c_longlong;
+pub type c_float = ::std::os::raw::c_double;
+pub type QDLDL_int = ::std::os::raw::c_longlong;
+pub type QDLDL_float = ::std::os::raw::c_double;
+pub type QDLDL_bool = ::std::os::raw::c_uchar;
+pub type linsys_solver_type = ::std::os::raw::c_uint;
 pub const MKL_PARDISO_SOLVER: linsys_solver_type = 1;
 pub const QDLDL_SOLVER: linsys_solver_type = 0;
-pub type osqp_error_type = libc::c_uint;
+pub type osqp_error_type = ::std::os::raw::c_uint;
 pub const OSQP_WORKSPACE_NOT_INIT_ERROR: osqp_error_type = 7;
 pub const OSQP_MEM_ALLOC_ERROR: osqp_error_type = 6;
 pub const OSQP_NONCVX_ERROR: osqp_error_type = 5;
@@ -145,14 +144,14 @@ pub struct qdldl {
 }
 pub type qdldl_solver = qdldl;
 pub const c_calloc: unsafe extern "C" fn(
-    libc::c_ulong,
-    libc::c_ulong,
-) -> *mut libc::c_void = calloc;
-pub const c_malloc: unsafe extern "C" fn(libc::c_ulong) -> *mut libc::c_void = malloc;
-pub const c_print: unsafe extern "C" fn(*const libc::c_char, ...) -> libc::c_int = printf;
-pub const c_free: unsafe extern "C" fn(*mut libc::c_void) -> () = free;
-pub const OSQP_NULL: libc::c_int = 0 as libc::c_int;
-pub const AMD_INFO: libc::c_int = 20 as libc::c_int;
+    ::std::os::raw::c_ulong,
+    ::std::os::raw::c_ulong,
+) -> *mut ::std::os::raw::c_void = calloc;
+pub const c_malloc: unsafe extern "C" fn(::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void = malloc;
+pub const c_print: unsafe extern "C" fn(*const ::std::os::raw::c_char, ...) -> ::std::os::raw::c_int = printf;
+pub const c_free: unsafe extern "C" fn(*mut ::std::os::raw::c_void) -> () = free;
+pub const OSQP_NULL: ::std::os::raw::c_int = 0 as ::std::os::raw::c_int;
+pub const AMD_INFO: ::std::os::raw::c_int = 20 as ::std::os::raw::c_int;
 #[no_mangle]
 pub unsafe extern "C" fn free_linsys_solver_qdldl(mut s: *mut qdldl_solver) {
     if !s.is_null() {
@@ -160,54 +159,54 @@ pub unsafe extern "C" fn free_linsys_solver_qdldl(mut s: *mut qdldl_solver) {
             csc_spfree((*s).L);
         }
         if !((*s).P).is_null() {
-            free((*s).P as *mut libc::c_void);
+            free((*s).P as *mut ::std::os::raw::c_void);
         }
         if !((*s).Dinv).is_null() {
-            free((*s).Dinv as *mut libc::c_void);
+            free((*s).Dinv as *mut ::std::os::raw::c_void);
         }
         if !((*s).bp).is_null() {
-            free((*s).bp as *mut libc::c_void);
+            free((*s).bp as *mut ::std::os::raw::c_void);
         }
         if !((*s).sol).is_null() {
-            free((*s).sol as *mut libc::c_void);
+            free((*s).sol as *mut ::std::os::raw::c_void);
         }
         if !((*s).rho_inv_vec).is_null() {
-            free((*s).rho_inv_vec as *mut libc::c_void);
+            free((*s).rho_inv_vec as *mut ::std::os::raw::c_void);
         }
         if !((*s).Pdiag_idx).is_null() {
-            free((*s).Pdiag_idx as *mut libc::c_void);
+            free((*s).Pdiag_idx as *mut ::std::os::raw::c_void);
         }
         if !((*s).KKT).is_null() {
             csc_spfree((*s).KKT);
         }
         if !((*s).PtoKKT).is_null() {
-            free((*s).PtoKKT as *mut libc::c_void);
+            free((*s).PtoKKT as *mut ::std::os::raw::c_void);
         }
         if !((*s).AtoKKT).is_null() {
-            free((*s).AtoKKT as *mut libc::c_void);
+            free((*s).AtoKKT as *mut ::std::os::raw::c_void);
         }
         if !((*s).rhotoKKT).is_null() {
-            free((*s).rhotoKKT as *mut libc::c_void);
+            free((*s).rhotoKKT as *mut ::std::os::raw::c_void);
         }
         if !((*s).D).is_null() {
-            free((*s).D as *mut libc::c_void);
+            free((*s).D as *mut ::std::os::raw::c_void);
         }
         if !((*s).etree).is_null() {
-            free((*s).etree as *mut libc::c_void);
+            free((*s).etree as *mut ::std::os::raw::c_void);
         }
         if !((*s).Lnz).is_null() {
-            free((*s).Lnz as *mut libc::c_void);
+            free((*s).Lnz as *mut ::std::os::raw::c_void);
         }
         if !((*s).iwork).is_null() {
-            free((*s).iwork as *mut libc::c_void);
+            free((*s).iwork as *mut ::std::os::raw::c_void);
         }
         if !((*s).bwork).is_null() {
-            free((*s).bwork as *mut libc::c_void);
+            free((*s).bwork as *mut ::std::os::raw::c_void);
         }
         if !((*s).fwork).is_null() {
-            free((*s).fwork as *mut libc::c_void);
+            free((*s).fwork as *mut ::std::os::raw::c_void);
         }
-        free(s as *mut libc::c_void);
+        free(s as *mut ::std::os::raw::c_void);
     }
 }
 unsafe extern "C" fn LDL_factor(
@@ -218,57 +217,57 @@ unsafe extern "C" fn LDL_factor(
     let mut sum_Lnz: c_int = 0;
     let mut factor_status: c_int = 0;
     sum_Lnz = QDLDL_etree((*A).n, (*A).p, (*A).i, (*p).iwork, (*p).Lnz, (*p).etree);
-    if sum_Lnz < 0 as libc::c_int as libc::c_longlong {
+    if sum_Lnz < 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
-            (*::std::mem::transmute::<&[u8; 11], &[libc::c_char; 11]>(b"LDL_factor\0"))
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
+            (*::std::mem::transmute::<&[u8; 11], &[::std::os::raw::c_char; 11]>(b"LDL_factor\0"))
                 .as_ptr(),
         );
         printf(
             b"Error in KKT matrix LDL factorization when computing the elimination tree.\0"
-                as *const u8 as *const libc::c_char,
+                as *const u8 as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
-        if sum_Lnz == -(1 as libc::c_int) as libc::c_longlong {
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        if sum_Lnz == -(1 as ::std::os::raw::c_int) as ::std::os::raw::c_longlong {
             printf(
-                b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+                b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
                 (*::std::mem::transmute::<
                     &[u8; 11],
-                    &[libc::c_char; 11],
+                    &[::std::os::raw::c_char; 11],
                 >(b"LDL_factor\0"))
                     .as_ptr(),
             );
             printf(
                 b"Matrix is not perfectly upper triangular.\0" as *const u8
-                    as *const libc::c_char,
+                    as *const ::std::os::raw::c_char,
             );
-            printf(b"\n\0" as *const u8 as *const libc::c_char);
-        } else if sum_Lnz == -(2 as libc::c_int) as libc::c_longlong {
+            printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+        } else if sum_Lnz == -(2 as ::std::os::raw::c_int) as ::std::os::raw::c_longlong {
             printf(
-                b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+                b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
                 (*::std::mem::transmute::<
                     &[u8; 11],
-                    &[libc::c_char; 11],
+                    &[::std::os::raw::c_char; 11],
                 >(b"LDL_factor\0"))
                     .as_ptr(),
             );
             printf(
                 b"Integer overflow in L nonzero count.\0" as *const u8
-                    as *const libc::c_char,
+                    as *const ::std::os::raw::c_char,
             );
-            printf(b"\n\0" as *const u8 as *const libc::c_char);
+            printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
         }
         return sum_Lnz;
     }
     let ref mut fresh0 = (*(*p).L).i;
     *fresh0 = malloc(
-        (::std::mem::size_of::<c_int>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul(sum_Lnz as libc::c_ulonglong) as libc::c_ulong,
+        (::std::mem::size_of::<c_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul(sum_Lnz as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
     ) as *mut c_int;
     let ref mut fresh1 = (*(*p).L).x;
     *fresh1 = malloc(
-        (::std::mem::size_of::<c_float>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul(sum_Lnz as libc::c_ulonglong) as libc::c_ulong,
+        (::std::mem::size_of::<c_float>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul(sum_Lnz as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
     ) as *mut c_float;
     (*(*p).L).nzmax = sum_Lnz;
     factor_status = QDLDL_factor(
@@ -287,37 +286,37 @@ unsafe extern "C" fn LDL_factor(
         (*p).iwork,
         (*p).fwork,
     );
-    if factor_status < 0 as libc::c_int as libc::c_longlong {
+    if factor_status < 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
-            (*::std::mem::transmute::<&[u8; 11], &[libc::c_char; 11]>(b"LDL_factor\0"))
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
+            (*::std::mem::transmute::<&[u8; 11], &[::std::os::raw::c_char; 11]>(b"LDL_factor\0"))
                 .as_ptr(),
         );
         printf(
             b"Error in KKT matrix LDL factorization when computing the nonzero elements. There are zeros in the diagonal matrix\0"
-                as *const u8 as *const libc::c_char,
+                as *const u8 as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
         return factor_status;
     } else {
         if factor_status < nvar {
             printf(
-                b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+                b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
                 (*::std::mem::transmute::<
                     &[u8; 11],
-                    &[libc::c_char; 11],
+                    &[::std::os::raw::c_char; 11],
                 >(b"LDL_factor\0"))
                     .as_ptr(),
             );
             printf(
                 b"Error in KKT matrix LDL factorization when computing the nonzero elements. The problem seems to be non-convex\0"
-                    as *const u8 as *const libc::c_char,
+                    as *const u8 as *const ::std::os::raw::c_char,
             );
-            printf(b"\n\0" as *const u8 as *const libc::c_char);
-            return -(2 as libc::c_int) as c_int;
+            printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
+            return -(2 as ::std::os::raw::c_int) as c_int;
         }
     }
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }
 unsafe extern "C" fn permute_KKT(
     mut KKT: *mut *mut csc,
@@ -336,19 +335,19 @@ unsafe extern "C" fn permute_KKT(
     let mut KtoPKPt: *mut c_int = 0 as *mut c_int;
     let mut i: c_int = 0;
     info = malloc(
-        (AMD_INFO as libc::c_ulong)
-            .wrapping_mul(::std::mem::size_of::<c_float>() as libc::c_ulong),
+        (AMD_INFO as ::std::os::raw::c_ulong)
+            .wrapping_mul(::std::mem::size_of::<c_float>() as ::std::os::raw::c_ulong),
     ) as *mut c_float;
     amd_status = amd_l_order(
         (**KKT).n,
-        (**KKT).p as *const libc::c_longlong,
-        (**KKT).i as *const libc::c_longlong,
+        (**KKT).p as *const ::std::os::raw::c_longlong,
+        (**KKT).i as *const ::std::os::raw::c_longlong,
         (*p).P,
         0 as *mut c_float,
         info,
     );
-    if amd_status < 0 as libc::c_int as libc::c_longlong {
-        free(info as *mut libc::c_void);
+    if amd_status < 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
+        free(info as *mut ::std::os::raw::c_void);
         return amd_status;
     }
     Pinv = csc_pinv((*p).P, (**KKT).n);
@@ -357,18 +356,18 @@ unsafe extern "C" fn permute_KKT(
             *KKT,
             Pinv,
             OSQP_NULL as *mut c_int,
-            1 as libc::c_int as c_int,
+            1 as ::std::os::raw::c_int as c_int,
         );
     } else {
         KtoPKPt = malloc(
-            (*((**KKT).p).offset((**KKT).n as isize) as libc::c_ulonglong)
+            (*((**KKT).p).offset((**KKT).n as isize) as ::std::os::raw::c_ulonglong)
                 .wrapping_mul(
-                    ::std::mem::size_of::<c_int>() as libc::c_ulong as libc::c_ulonglong,
-                ) as libc::c_ulong,
+                    ::std::mem::size_of::<c_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong,
+                ) as ::std::os::raw::c_ulong,
         ) as *mut c_int;
-        KKT_temp = csc_symperm(*KKT, Pinv, KtoPKPt, 1 as libc::c_int as c_int);
+        KKT_temp = csc_symperm(*KKT, Pinv, KtoPKPt, 1 as ::std::os::raw::c_int as c_int);
         if !PtoKKT.is_null() {
-            i = 0 as libc::c_int as c_int;
+            i = 0 as ::std::os::raw::c_int as c_int;
             while i < Pnz {
                 *PtoKKT
                     .offset(
@@ -378,7 +377,7 @@ unsafe extern "C" fn permute_KKT(
             }
         }
         if !AtoKKT.is_null() {
-            i = 0 as libc::c_int as c_int;
+            i = 0 as ::std::os::raw::c_int as c_int;
             while i < Anz {
                 *AtoKKT
                     .offset(
@@ -388,7 +387,7 @@ unsafe extern "C" fn permute_KKT(
             }
         }
         if !rhotoKKT.is_null() {
-            i = 0 as libc::c_int as c_int;
+            i = 0 as ::std::os::raw::c_int as c_int;
             while i < m {
                 *rhotoKKT
                     .offset(
@@ -397,13 +396,13 @@ unsafe extern "C" fn permute_KKT(
                 i += 1;
             }
         }
-        free(KtoPKPt as *mut libc::c_void);
+        free(KtoPKPt as *mut ::std::os::raw::c_void);
     }
     csc_spfree(*KKT);
     *KKT = KKT_temp;
-    free(Pinv as *mut libc::c_void);
-    free(info as *mut libc::c_void);
-    return 0 as libc::c_int as c_int;
+    free(Pinv as *mut ::std::os::raw::c_void);
+    free(info as *mut ::std::os::raw::c_void);
+    return 0 as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn init_linsys_solver_qdldl(
@@ -419,8 +418,8 @@ pub unsafe extern "C" fn init_linsys_solver_qdldl(
     let mut n_plus_m: c_int = 0;
     let mut s: *mut qdldl_solver = 0 as *mut qdldl_solver;
     s = calloc(
-        1 as libc::c_int as libc::c_ulong,
-        ::std::mem::size_of::<qdldl_solver>() as libc::c_ulong,
+        1 as ::std::os::raw::c_int as ::std::os::raw::c_ulong,
+        ::std::mem::size_of::<qdldl_solver>() as ::std::os::raw::c_ulong,
     ) as *mut qdldl_solver;
     *sp = s;
     (*s).n = (*P).n;
@@ -448,62 +447,62 @@ pub unsafe extern "C" fn init_linsys_solver_qdldl(
             as unsafe extern "C" fn(*mut qdldl_solver, *const c_float) -> c_int,
     );
     (*s).type_0 = QDLDL_SOLVER;
-    (*s).nthreads = 1 as libc::c_int as c_int;
+    (*s).nthreads = 1 as ::std::os::raw::c_int as c_int;
     let ref mut fresh6 = (*s).L;
-    *fresh6 = malloc(::std::mem::size_of::<csc>() as libc::c_ulong) as *mut csc;
+    *fresh6 = malloc(::std::mem::size_of::<csc>() as ::std::os::raw::c_ulong) as *mut csc;
     (*(*s).L).m = n_plus_m;
     (*(*s).L).n = n_plus_m;
-    (*(*s).L).nz = -(1 as libc::c_int) as c_int;
+    (*(*s).L).nz = -(1 as ::std::os::raw::c_int) as c_int;
     let ref mut fresh7 = (*s).Dinv;
     *fresh7 = malloc(
-        (::std::mem::size_of::<QDLDL_float>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul(n_plus_m as libc::c_ulonglong) as libc::c_ulong,
+        (::std::mem::size_of::<QDLDL_float>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul(n_plus_m as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
     ) as *mut QDLDL_float;
     let ref mut fresh8 = (*s).D;
     *fresh8 = malloc(
-        (::std::mem::size_of::<QDLDL_float>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul(n_plus_m as libc::c_ulonglong) as libc::c_ulong,
+        (::std::mem::size_of::<QDLDL_float>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul(n_plus_m as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
     ) as *mut QDLDL_float;
     let ref mut fresh9 = (*s).P;
     *fresh9 = malloc(
-        (::std::mem::size_of::<QDLDL_int>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul(n_plus_m as libc::c_ulonglong) as libc::c_ulong,
+        (::std::mem::size_of::<QDLDL_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul(n_plus_m as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
     ) as *mut QDLDL_int;
     let ref mut fresh10 = (*s).bp;
     *fresh10 = malloc(
-        (::std::mem::size_of::<QDLDL_float>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul(n_plus_m as libc::c_ulonglong) as libc::c_ulong,
+        (::std::mem::size_of::<QDLDL_float>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul(n_plus_m as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
     ) as *mut QDLDL_float;
     let ref mut fresh11 = (*s).sol;
     *fresh11 = malloc(
-        (::std::mem::size_of::<QDLDL_float>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul(n_plus_m as libc::c_ulonglong) as libc::c_ulong,
+        (::std::mem::size_of::<QDLDL_float>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul(n_plus_m as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
     ) as *mut QDLDL_float;
     let ref mut fresh12 = (*s).rho_inv_vec;
     *fresh12 = malloc(
-        (::std::mem::size_of::<c_float>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul((*s).m as libc::c_ulonglong) as libc::c_ulong,
+        (::std::mem::size_of::<c_float>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul((*s).m as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
     ) as *mut c_float;
     let ref mut fresh13 = (*s).etree;
     *fresh13 = malloc(
-        (n_plus_m as libc::c_ulonglong)
+        (n_plus_m as ::std::os::raw::c_ulonglong)
             .wrapping_mul(
-                ::std::mem::size_of::<QDLDL_int>() as libc::c_ulong as libc::c_ulonglong,
-            ) as libc::c_ulong,
+                ::std::mem::size_of::<QDLDL_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong,
+            ) as ::std::os::raw::c_ulong,
     ) as *mut QDLDL_int;
     let ref mut fresh14 = (*s).Lnz;
     *fresh14 = malloc(
-        (n_plus_m as libc::c_ulonglong)
+        (n_plus_m as ::std::os::raw::c_ulonglong)
             .wrapping_mul(
-                ::std::mem::size_of::<QDLDL_int>() as libc::c_ulong as libc::c_ulonglong,
-            ) as libc::c_ulong,
+                ::std::mem::size_of::<QDLDL_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong,
+            ) as ::std::os::raw::c_ulong,
     ) as *mut QDLDL_int;
     let ref mut fresh15 = (*(*s).L).p;
     *fresh15 = malloc(
-        ((n_plus_m + 1 as libc::c_int as libc::c_longlong) as libc::c_ulonglong)
+        ((n_plus_m + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as ::std::os::raw::c_ulonglong)
             .wrapping_mul(
-                ::std::mem::size_of::<QDLDL_int>() as libc::c_ulong as libc::c_ulonglong,
-            ) as libc::c_ulong,
+                ::std::mem::size_of::<QDLDL_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong,
+            ) as ::std::os::raw::c_ulong,
     ) as *mut c_int;
     let ref mut fresh16 = (*(*s).L).i;
     *fresh16 = OSQP_NULL as *mut c_int;
@@ -511,23 +510,23 @@ pub unsafe extern "C" fn init_linsys_solver_qdldl(
     *fresh17 = OSQP_NULL as *mut c_float;
     let ref mut fresh18 = (*s).iwork;
     *fresh18 = malloc(
-        (::std::mem::size_of::<QDLDL_int>() as libc::c_ulong as libc::c_ulonglong)
+        (::std::mem::size_of::<QDLDL_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
             .wrapping_mul(
-                (3 as libc::c_int as libc::c_longlong * n_plus_m) as libc::c_ulonglong,
-            ) as libc::c_ulong,
+                (3 as ::std::os::raw::c_int as ::std::os::raw::c_longlong * n_plus_m) as ::std::os::raw::c_ulonglong,
+            ) as ::std::os::raw::c_ulong,
     ) as *mut QDLDL_int;
     let ref mut fresh19 = (*s).bwork;
     *fresh19 = malloc(
-        (::std::mem::size_of::<QDLDL_bool>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul(n_plus_m as libc::c_ulonglong) as libc::c_ulong,
+        (::std::mem::size_of::<QDLDL_bool>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul(n_plus_m as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
     ) as *mut QDLDL_bool;
     let ref mut fresh20 = (*s).fwork;
     *fresh20 = malloc(
-        (::std::mem::size_of::<QDLDL_float>() as libc::c_ulong as libc::c_ulonglong)
-            .wrapping_mul(n_plus_m as libc::c_ulonglong) as libc::c_ulong,
+        (::std::mem::size_of::<QDLDL_float>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong)
+            .wrapping_mul(n_plus_m as ::std::os::raw::c_ulonglong) as ::std::os::raw::c_ulong,
     ) as *mut QDLDL_float;
     if polish != 0 {
-        i = 0 as libc::c_int as c_int;
+        i = 0 as ::std::os::raw::c_int as c_int;
         while i < (*A).m {
             *((*s).rho_inv_vec).offset(i as isize) = sigma;
             i += 1;
@@ -535,7 +534,7 @@ pub unsafe extern "C" fn init_linsys_solver_qdldl(
         KKT_temp = form_KKT(
             P,
             A,
-            0 as libc::c_int as c_int,
+            0 as ::std::os::raw::c_int as c_int,
             sigma,
             (*s).rho_inv_vec,
             OSQP_NULL as *mut c_int,
@@ -559,26 +558,26 @@ pub unsafe extern "C" fn init_linsys_solver_qdldl(
     } else {
         let ref mut fresh21 = (*s).PtoKKT;
         *fresh21 = malloc(
-            (*((*P).p).offset((*P).n as isize) as libc::c_ulonglong)
+            (*((*P).p).offset((*P).n as isize) as ::std::os::raw::c_ulonglong)
                 .wrapping_mul(
-                    ::std::mem::size_of::<c_int>() as libc::c_ulong as libc::c_ulonglong,
-                ) as libc::c_ulong,
+                    ::std::mem::size_of::<c_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong,
+                ) as ::std::os::raw::c_ulong,
         ) as *mut c_int;
         let ref mut fresh22 = (*s).AtoKKT;
         *fresh22 = malloc(
-            (*((*A).p).offset((*A).n as isize) as libc::c_ulonglong)
+            (*((*A).p).offset((*A).n as isize) as ::std::os::raw::c_ulonglong)
                 .wrapping_mul(
-                    ::std::mem::size_of::<c_int>() as libc::c_ulong as libc::c_ulonglong,
-                ) as libc::c_ulong,
+                    ::std::mem::size_of::<c_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong,
+                ) as ::std::os::raw::c_ulong,
         ) as *mut c_int;
         let ref mut fresh23 = (*s).rhotoKKT;
         *fresh23 = malloc(
-            ((*A).m as libc::c_ulonglong)
+            ((*A).m as ::std::os::raw::c_ulonglong)
                 .wrapping_mul(
-                    ::std::mem::size_of::<c_int>() as libc::c_ulong as libc::c_ulonglong,
-                ) as libc::c_ulong,
+                    ::std::mem::size_of::<c_int>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong,
+                ) as ::std::os::raw::c_ulong,
         ) as *mut c_int;
-        i = 0 as libc::c_int as c_int;
+        i = 0 as ::std::os::raw::c_int as c_int;
         while i < (*A).m {
             *((*s).rho_inv_vec)
                 .offset(i as isize) = 1.0f64 / *rho_vec.offset(i as isize);
@@ -587,7 +586,7 @@ pub unsafe extern "C" fn init_linsys_solver_qdldl(
         KKT_temp = form_KKT(
             P,
             A,
-            0 as libc::c_int as c_int,
+            0 as ::std::os::raw::c_int as c_int,
             sigma,
             (*s).rho_inv_vec,
             (*s).PtoKKT,
@@ -611,27 +610,27 @@ pub unsafe extern "C" fn init_linsys_solver_qdldl(
     }
     if KKT_temp.is_null() {
         printf(
-            b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+            b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
             (*::std::mem::transmute::<
                 &[u8; 25],
-                &[libc::c_char; 25],
+                &[::std::os::raw::c_char; 25],
             >(b"init_linsys_solver_qdldl\0"))
                 .as_ptr(),
         );
         printf(
             b"Error forming and permuting KKT matrix\0" as *const u8
-                as *const libc::c_char,
+                as *const ::std::os::raw::c_char,
         );
-        printf(b"\n\0" as *const u8 as *const libc::c_char);
+        printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
         free_linsys_solver_qdldl(s);
         *sp = OSQP_NULL as *mut qdldl_solver;
-        return OSQP_LINSYS_SOLVER_INIT_ERROR as libc::c_int as c_int;
+        return OSQP_LINSYS_SOLVER_INIT_ERROR as ::std::os::raw::c_int as c_int;
     }
-    if LDL_factor(KKT_temp, s, (*P).n) < 0 as libc::c_int as libc::c_longlong {
+    if LDL_factor(KKT_temp, s, (*P).n) < 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         csc_spfree(KKT_temp);
         free_linsys_solver_qdldl(s);
         *sp = OSQP_NULL as *mut qdldl_solver;
-        return OSQP_NONCVX_ERROR as libc::c_int as c_int;
+        return OSQP_NONCVX_ERROR as ::std::os::raw::c_int as c_int;
     }
     if polish != 0 {
         csc_spfree(KKT_temp);
@@ -639,7 +638,7 @@ pub unsafe extern "C" fn init_linsys_solver_qdldl(
         let ref mut fresh24 = (*s).KKT;
         *fresh24 = KKT_temp;
     }
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn permute_x(
@@ -649,7 +648,7 @@ pub unsafe extern "C" fn permute_x(
     mut P: *const c_int,
 ) {
     let mut j: c_int = 0;
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < n {
         *x.offset(j as isize) = *b.offset(*P.offset(j as isize) as isize);
         j += 1;
@@ -663,7 +662,7 @@ pub unsafe extern "C" fn permutet_x(
     mut P: *const c_int,
 ) {
     let mut j: c_int = 0;
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < n {
         *x.offset(*P.offset(j as isize) as isize) = *b.offset(j as isize);
         j += 1;
@@ -691,12 +690,12 @@ pub unsafe extern "C" fn solve_linsys_qdldl(
         LDLSolve(b, b, (*s).L, (*s).Dinv, (*s).P, (*s).bp);
     } else {
         LDLSolve((*s).sol, b, (*s).L, (*s).Dinv, (*s).P, (*s).bp);
-        j = 0 as libc::c_int as c_int;
+        j = 0 as ::std::os::raw::c_int as c_int;
         while j < (*s).n {
             *b.offset(j as isize) = *((*s).sol).offset(j as isize);
             j += 1;
         }
-        j = 0 as libc::c_int as c_int;
+        j = 0 as ::std::os::raw::c_int as c_int;
         while j < (*s).m {
             let ref mut fresh25 = *b.offset((j + (*s).n) as isize);
             *fresh25
@@ -705,7 +704,7 @@ pub unsafe extern "C" fn solve_linsys_qdldl(
             j += 1;
         }
     }
-    return 0 as libc::c_int as c_int;
+    return 0 as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn update_linsys_solver_matrices_qdldl(
@@ -730,7 +729,7 @@ pub unsafe extern "C" fn update_linsys_solver_matrices_qdldl(
         (*s).bwork,
         (*s).iwork,
         (*s).fwork,
-    ) < 0 as libc::c_int as libc::c_longlong) as libc::c_int as c_int;
+    ) < 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as ::std::os::raw::c_int as c_int;
 }
 #[no_mangle]
 pub unsafe extern "C" fn update_linsys_solver_rho_vec_qdldl(
@@ -738,7 +737,7 @@ pub unsafe extern "C" fn update_linsys_solver_rho_vec_qdldl(
     mut rho_vec: *const c_float,
 ) -> c_int {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < (*s).m {
         *((*s).rho_inv_vec).offset(i as isize) = 1.0f64 / *rho_vec.offset(i as isize);
         i += 1;
@@ -759,5 +758,5 @@ pub unsafe extern "C" fn update_linsys_solver_rho_vec_qdldl(
         (*s).bwork,
         (*s).iwork,
         (*s).fwork,
-    ) < 0 as libc::c_int as libc::c_longlong) as libc::c_int as c_int;
+    ) < 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as ::std::os::raw::c_int as c_int;
 }

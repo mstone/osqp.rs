@@ -1,11 +1,10 @@
-use ::libc;
 extern "C" {
-    fn sqrt(_: libc::c_double) -> libc::c_double;
-    fn malloc(_: libc::c_ulong) -> *mut libc::c_void;
-    fn printf(_: *const libc::c_char, _: ...) -> libc::c_int;
+    fn sqrt(_: ::std::os::raw::c_double) -> ::std::os::raw::c_double;
+    fn malloc(_: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void;
+    fn printf(_: *const ::std::os::raw::c_char, _: ...) -> ::std::os::raw::c_int;
 }
-pub type c_int = libc::c_longlong;
-pub type c_float = libc::c_double;
+pub type c_int = ::std::os::raw::c_longlong;
+pub type c_float = ::std::os::raw::c_double;
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct csc {
@@ -17,10 +16,10 @@ pub struct csc {
     pub x: *mut c_float,
     pub nz: c_int,
 }
-pub const OSQP_NULL: libc::c_int = 0 as libc::c_int;
-pub const c_malloc: unsafe extern "C" fn(libc::c_ulong) -> *mut libc::c_void = malloc;
-pub const c_print: unsafe extern "C" fn(*const libc::c_char, ...) -> libc::c_int = printf;
-pub const c_sqrt: unsafe extern "C" fn(libc::c_double) -> libc::c_double = sqrt;
+pub const OSQP_NULL: ::std::os::raw::c_int = 0 as ::std::os::raw::c_int;
+pub const c_malloc: unsafe extern "C" fn(::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void = malloc;
+pub const c_print: unsafe extern "C" fn(*const ::std::os::raw::c_char, ...) -> ::std::os::raw::c_int = printf;
+pub const c_sqrt: unsafe extern "C" fn(::std::os::raw::c_double) -> ::std::os::raw::c_double = sqrt;
 #[no_mangle]
 pub unsafe extern "C" fn vec_add_scaled(
     mut c: *mut c_float,
@@ -30,7 +29,7 @@ pub unsafe extern "C" fn vec_add_scaled(
     mut sc: c_float,
 ) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *c.offset(i as isize) = *a.offset(i as isize) + sc * *b.offset(i as isize);
         i += 1;
@@ -45,10 +44,10 @@ pub unsafe extern "C" fn vec_scaled_norm_inf(
     let mut i: c_int = 0;
     let mut abs_Sv_i: c_float = 0.;
     let mut max: c_float = 0.0f64;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < l {
         abs_Sv_i = if *S.offset(i as isize) * *v.offset(i as isize)
-            < 0 as libc::c_int as libc::c_double
+            < 0 as ::std::os::raw::c_int as ::std::os::raw::c_double
         {
             -(*S.offset(i as isize) * *v.offset(i as isize))
         } else {
@@ -66,9 +65,9 @@ pub unsafe extern "C" fn vec_norm_inf(mut v: *const c_float, mut l: c_int) -> c_
     let mut i: c_int = 0;
     let mut abs_v_i: c_float = 0.;
     let mut max: c_float = 0.0f64;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < l {
-        abs_v_i = if *v.offset(i as isize) < 0 as libc::c_int as libc::c_double {
+        abs_v_i = if *v.offset(i as isize) < 0 as ::std::os::raw::c_int as ::std::os::raw::c_double {
             -*v.offset(i as isize)
         } else {
             *v.offset(i as isize)
@@ -89,10 +88,10 @@ pub unsafe extern "C" fn vec_norm_inf_diff(
     let mut nmDiff: c_float = 0.0f64;
     let mut tmp: c_float = 0.;
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < l {
         tmp = if *a.offset(i as isize) - *b.offset(i as isize)
-            < 0 as libc::c_int as libc::c_double
+            < 0 as ::std::os::raw::c_int as ::std::os::raw::c_double
         {
             -(*a.offset(i as isize) - *b.offset(i as isize))
         } else {
@@ -109,7 +108,7 @@ pub unsafe extern "C" fn vec_norm_inf_diff(
 pub unsafe extern "C" fn vec_mean(mut a: *const c_float, mut n: c_int) -> c_float {
     let mut mean: c_float = 0.0f64;
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         mean += *a.offset(i as isize);
         i += 1;
@@ -124,7 +123,7 @@ pub unsafe extern "C" fn int_vec_set_scalar(
     mut n: c_int,
 ) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *a.offset(i as isize) = sc;
         i += 1;
@@ -137,7 +136,7 @@ pub unsafe extern "C" fn vec_set_scalar(
     mut n: c_int,
 ) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *a.offset(i as isize) = sc;
         i += 1;
@@ -150,7 +149,7 @@ pub unsafe extern "C" fn vec_add_scalar(
     mut n: c_int,
 ) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         let ref mut fresh0 = *a.offset(i as isize);
         *fresh0 += sc;
@@ -164,7 +163,7 @@ pub unsafe extern "C" fn vec_mult_scalar(
     mut n: c_int,
 ) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         let ref mut fresh1 = *a.offset(i as isize);
         *fresh1 *= sc;
@@ -176,15 +175,15 @@ pub unsafe extern "C" fn vec_copy(mut a: *mut c_float, mut n: c_int) -> *mut c_f
     let mut b: *mut c_float = 0 as *mut c_float;
     let mut i: c_int = 0;
     b = malloc(
-        (n as libc::c_ulonglong)
+        (n as ::std::os::raw::c_ulonglong)
             .wrapping_mul(
-                ::std::mem::size_of::<c_float>() as libc::c_ulong as libc::c_ulonglong,
-            ) as libc::c_ulong,
+                ::std::mem::size_of::<c_float>() as ::std::os::raw::c_ulong as ::std::os::raw::c_ulonglong,
+            ) as ::std::os::raw::c_ulong,
     ) as *mut c_float;
     if b.is_null() {
         return OSQP_NULL as *mut c_float;
     }
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *b.offset(i as isize) = *a.offset(i as isize);
         i += 1;
@@ -198,7 +197,7 @@ pub unsafe extern "C" fn prea_int_vec_copy(
     mut n: c_int,
 ) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *b.offset(i as isize) = *a.offset(i as isize);
         i += 1;
@@ -211,7 +210,7 @@ pub unsafe extern "C" fn prea_vec_copy(
     mut n: c_int,
 ) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *b.offset(i as isize) = *a.offset(i as isize);
         i += 1;
@@ -224,7 +223,7 @@ pub unsafe extern "C" fn vec_ew_recipr(
     mut n: c_int,
 ) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *b.offset(i as isize) = 1.0f64 / *a.offset(i as isize);
         i += 1;
@@ -238,7 +237,7 @@ pub unsafe extern "C" fn vec_prod(
 ) -> c_float {
     let mut prod: c_float = 0.0f64;
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         prod += *a.offset(i as isize) * *b.offset(i as isize);
         i += 1;
@@ -253,7 +252,7 @@ pub unsafe extern "C" fn vec_ew_prod(
     mut n: c_int,
 ) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *c.offset(i as isize) = *b.offset(i as isize) * *a.offset(i as isize);
         i += 1;
@@ -262,7 +261,7 @@ pub unsafe extern "C" fn vec_ew_prod(
 #[no_mangle]
 pub unsafe extern "C" fn vec_ew_sqrt(mut a: *mut c_float, mut n: c_int) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *a.offset(i as isize) = sqrt(*a.offset(i as isize));
         i += 1;
@@ -275,7 +274,7 @@ pub unsafe extern "C" fn vec_ew_max(
     mut max_val: c_float,
 ) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *a
             .offset(
@@ -295,7 +294,7 @@ pub unsafe extern "C" fn vec_ew_min(
     mut min_val: c_float,
 ) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *a
             .offset(
@@ -316,7 +315,7 @@ pub unsafe extern "C" fn vec_ew_max_vec(
     mut n: c_int,
 ) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *c
             .offset(
@@ -337,7 +336,7 @@ pub unsafe extern "C" fn vec_ew_min_vec(
     mut n: c_int,
 ) {
     let mut i: c_int = 0;
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < n {
         *c
             .offset(
@@ -355,7 +354,7 @@ pub unsafe extern "C" fn mat_mult_scalar(mut A: *mut csc, mut sc: c_float) {
     let mut i: c_int = 0;
     let mut nnzA: c_int = 0;
     nnzA = *((*A).p).offset((*A).n as isize);
-    i = 0 as libc::c_int as c_int;
+    i = 0 as ::std::os::raw::c_int as c_int;
     while i < nnzA {
         let ref mut fresh2 = *((*A).x).offset(i as isize);
         *fresh2 *= sc;
@@ -366,10 +365,10 @@ pub unsafe extern "C" fn mat_mult_scalar(mut A: *mut csc, mut sc: c_float) {
 pub unsafe extern "C" fn mat_premult_diag(mut A: *mut csc, mut d: *const c_float) {
     let mut j: c_int = 0;
     let mut i: c_int = 0;
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*A).n {
         i = *((*A).p).offset(j as isize);
-        while i < *((*A).p).offset((j + 1 as libc::c_int as libc::c_longlong) as isize) {
+        while i < *((*A).p).offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize) {
             let ref mut fresh3 = *((*A).x).offset(i as isize);
             *fresh3 *= *d.offset(*((*A).i).offset(i as isize) as isize);
             i += 1;
@@ -381,10 +380,10 @@ pub unsafe extern "C" fn mat_premult_diag(mut A: *mut csc, mut d: *const c_float
 pub unsafe extern "C" fn mat_postmult_diag(mut A: *mut csc, mut d: *const c_float) {
     let mut j: c_int = 0;
     let mut i: c_int = 0;
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*A).n {
         i = *((*A).p).offset(j as isize);
-        while i < *((*A).p).offset((j + 1 as libc::c_int as libc::c_longlong) as isize) {
+        while i < *((*A).p).offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize) {
             let ref mut fresh4 = *((*A).x).offset(i as isize);
             *fresh4 *= *d.offset(j as isize);
             i += 1;
@@ -402,21 +401,21 @@ pub unsafe extern "C" fn mat_vec(
     let mut i: c_int = 0;
     let mut j: c_int = 0;
     if plus_eq == 0 {
-        i = 0 as libc::c_int as c_int;
+        i = 0 as ::std::os::raw::c_int as c_int;
         while i < (*A).m {
-            *y.offset(i as isize) = 0 as libc::c_int as c_float;
+            *y.offset(i as isize) = 0 as ::std::os::raw::c_int as c_float;
             i += 1;
         }
     }
-    if *((*A).p).offset((*A).n as isize) == 0 as libc::c_int as libc::c_longlong {
+    if *((*A).p).offset((*A).n as isize) == 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         return;
     }
-    if plus_eq == -(1 as libc::c_int) as libc::c_longlong {
-        j = 0 as libc::c_int as c_int;
+    if plus_eq == -(1 as ::std::os::raw::c_int) as ::std::os::raw::c_longlong {
+        j = 0 as ::std::os::raw::c_int as c_int;
         while j < (*A).n {
             i = *((*A).p).offset(j as isize);
             while i
-                < *((*A).p).offset((j + 1 as libc::c_int as libc::c_longlong) as isize)
+                < *((*A).p).offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize)
             {
                 let ref mut fresh5 = *y.offset(*((*A).i).offset(i as isize) as isize);
                 *fresh5 -= *((*A).x).offset(i as isize) * *x.offset(j as isize);
@@ -425,11 +424,11 @@ pub unsafe extern "C" fn mat_vec(
             j += 1;
         }
     } else {
-        j = 0 as libc::c_int as c_int;
+        j = 0 as ::std::os::raw::c_int as c_int;
         while j < (*A).n {
             i = *((*A).p).offset(j as isize);
             while i
-                < *((*A).p).offset((j + 1 as libc::c_int as libc::c_longlong) as isize)
+                < *((*A).p).offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize)
             {
                 let ref mut fresh6 = *y.offset(*((*A).i).offset(i as isize) as isize);
                 *fresh6 += *((*A).x).offset(i as isize) * *x.offset(j as isize);
@@ -451,29 +450,29 @@ pub unsafe extern "C" fn mat_tpose_vec(
     let mut j: c_int = 0;
     let mut k: c_int = 0;
     if plus_eq == 0 {
-        i = 0 as libc::c_int as c_int;
+        i = 0 as ::std::os::raw::c_int as c_int;
         while i < (*A).n {
-            *y.offset(i as isize) = 0 as libc::c_int as c_float;
+            *y.offset(i as isize) = 0 as ::std::os::raw::c_int as c_float;
             i += 1;
         }
     }
-    if *((*A).p).offset((*A).n as isize) == 0 as libc::c_int as libc::c_longlong {
+    if *((*A).p).offset((*A).n as isize) == 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         return;
     }
-    if plus_eq == -(1 as libc::c_int) as libc::c_longlong {
+    if plus_eq == -(1 as ::std::os::raw::c_int) as ::std::os::raw::c_longlong {
         if skip_diag != 0 {
-            j = 0 as libc::c_int as c_int;
+            j = 0 as ::std::os::raw::c_int as c_int;
             while j < (*A).n {
                 k = *((*A).p).offset(j as isize);
                 while k
                     < *((*A).p)
-                        .offset((j + 1 as libc::c_int as libc::c_longlong) as isize)
+                        .offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize)
                 {
                     i = *((*A).i).offset(k as isize);
                     let ref mut fresh7 = *y.offset(j as isize);
                     *fresh7
                         -= if i == j {
-                            0 as libc::c_int as libc::c_double
+                            0 as ::std::os::raw::c_int as ::std::os::raw::c_double
                         } else {
                             *((*A).x).offset(k as isize) * *x.offset(i as isize)
                         };
@@ -482,12 +481,12 @@ pub unsafe extern "C" fn mat_tpose_vec(
                 j += 1;
             }
         } else {
-            j = 0 as libc::c_int as c_int;
+            j = 0 as ::std::os::raw::c_int as c_int;
             while j < (*A).n {
                 k = *((*A).p).offset(j as isize);
                 while k
                     < *((*A).p)
-                        .offset((j + 1 as libc::c_int as libc::c_longlong) as isize)
+                        .offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize)
                 {
                     let ref mut fresh8 = *y.offset(j as isize);
                     *fresh8
@@ -499,17 +498,17 @@ pub unsafe extern "C" fn mat_tpose_vec(
             }
         }
     } else if skip_diag != 0 {
-        j = 0 as libc::c_int as c_int;
+        j = 0 as ::std::os::raw::c_int as c_int;
         while j < (*A).n {
             k = *((*A).p).offset(j as isize);
             while k
-                < *((*A).p).offset((j + 1 as libc::c_int as libc::c_longlong) as isize)
+                < *((*A).p).offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize)
             {
                 i = *((*A).i).offset(k as isize);
                 let ref mut fresh9 = *y.offset(j as isize);
                 *fresh9
                     += if i == j {
-                        0 as libc::c_int as libc::c_double
+                        0 as ::std::os::raw::c_int as ::std::os::raw::c_double
                     } else {
                         *((*A).x).offset(k as isize) * *x.offset(i as isize)
                     };
@@ -518,11 +517,11 @@ pub unsafe extern "C" fn mat_tpose_vec(
             j += 1;
         }
     } else {
-        j = 0 as libc::c_int as c_int;
+        j = 0 as ::std::os::raw::c_int as c_int;
         while j < (*A).n {
             k = *((*A).p).offset(j as isize);
             while k
-                < *((*A).p).offset((j + 1 as libc::c_int as libc::c_longlong) as isize)
+                < *((*A).p).offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize)
             {
                 let ref mut fresh10 = *y.offset(j as isize);
                 *fresh10
@@ -538,28 +537,28 @@ pub unsafe extern "C" fn mat_tpose_vec(
 pub unsafe extern "C" fn mat_inf_norm_cols(mut M: *const csc, mut E: *mut c_float) {
     let mut j: c_int = 0;
     let mut ptr: c_int = 0;
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*M).n {
         *E.offset(j as isize) = 0.0f64;
         j += 1;
     }
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*M).n {
         ptr = *((*M).p).offset(j as isize);
-        while ptr < *((*M).p).offset((j + 1 as libc::c_int as libc::c_longlong) as isize)
+        while ptr < *((*M).p).offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize)
         {
             *E
                 .offset(
                     j as isize,
                 ) = if (if *((*M).x).offset(ptr as isize)
-                < 0 as libc::c_int as libc::c_double
+                < 0 as ::std::os::raw::c_int as ::std::os::raw::c_double
             {
                 -*((*M).x).offset(ptr as isize)
             } else {
                 *((*M).x).offset(ptr as isize)
             }) > *E.offset(j as isize)
             {
-                if *((*M).x).offset(ptr as isize) < 0 as libc::c_int as libc::c_double {
+                if *((*M).x).offset(ptr as isize) < 0 as ::std::os::raw::c_int as ::std::os::raw::c_double {
                     -*((*M).x).offset(ptr as isize)
                 } else {
                     *((*M).x).offset(ptr as isize)
@@ -577,29 +576,29 @@ pub unsafe extern "C" fn mat_inf_norm_rows(mut M: *const csc, mut E: *mut c_floa
     let mut i: c_int = 0;
     let mut j: c_int = 0;
     let mut ptr: c_int = 0;
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*M).m {
         *E.offset(j as isize) = 0.0f64;
         j += 1;
     }
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*M).n {
         ptr = *((*M).p).offset(j as isize);
-        while ptr < *((*M).p).offset((j + 1 as libc::c_int as libc::c_longlong) as isize)
+        while ptr < *((*M).p).offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize)
         {
             i = *((*M).i).offset(ptr as isize);
             *E
                 .offset(
                     i as isize,
                 ) = if (if *((*M).x).offset(ptr as isize)
-                < 0 as libc::c_int as libc::c_double
+                < 0 as ::std::os::raw::c_int as ::std::os::raw::c_double
             {
                 -*((*M).x).offset(ptr as isize)
             } else {
                 *((*M).x).offset(ptr as isize)
             }) > *E.offset(i as isize)
             {
-                if *((*M).x).offset(ptr as isize) < 0 as libc::c_int as libc::c_double {
+                if *((*M).x).offset(ptr as isize) < 0 as ::std::os::raw::c_int as ::std::os::raw::c_double {
                     -*((*M).x).offset(ptr as isize)
                 } else {
                     *((*M).x).offset(ptr as isize)
@@ -621,19 +620,19 @@ pub unsafe extern "C" fn mat_inf_norm_cols_sym_triu(
     let mut j: c_int = 0;
     let mut ptr: c_int = 0;
     let mut abs_x: c_float = 0.;
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*M).n {
         *E.offset(j as isize) = 0.0f64;
         j += 1;
     }
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*M).n {
         ptr = *((*M).p).offset(j as isize);
-        while ptr < *((*M).p).offset((j + 1 as libc::c_int as libc::c_longlong) as isize)
+        while ptr < *((*M).p).offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize)
         {
             i = *((*M).i).offset(ptr as isize);
             abs_x = if *((*M).x).offset(ptr as isize)
-                < 0 as libc::c_int as libc::c_double
+                < 0 as ::std::os::raw::c_int as ::std::os::raw::c_double
             {
                 -*((*M).x).offset(ptr as isize)
             } else {
@@ -668,10 +667,10 @@ pub unsafe extern "C" fn quad_form(mut P: *const csc, mut x: *const c_float) -> 
     let mut i: c_int = 0;
     let mut j: c_int = 0;
     let mut ptr: c_int = 0;
-    j = 0 as libc::c_int as c_int;
+    j = 0 as ::std::os::raw::c_int as c_int;
     while j < (*P).n {
         ptr = *((*P).p).offset(j as isize);
-        while ptr < *((*P).p).offset((j + 1 as libc::c_int as libc::c_longlong) as isize)
+        while ptr < *((*P).p).offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize)
         {
             i = *((*P).i).offset(ptr as isize);
             if i == j {
@@ -684,18 +683,18 @@ pub unsafe extern "C" fn quad_form(mut P: *const csc, mut x: *const c_float) -> 
                         * *x.offset(j as isize);
             } else {
                 printf(
-                    b"ERROR in %s: \0" as *const u8 as *const libc::c_char,
+                    b"ERROR in %s: \0" as *const u8 as *const ::std::os::raw::c_char,
                     (*::std::mem::transmute::<
                         &[u8; 10],
-                        &[libc::c_char; 10],
+                        &[::std::os::raw::c_char; 10],
                     >(b"quad_form\0"))
                         .as_ptr(),
                 );
                 printf(
                     b"quad_form matrix is not upper triangular\0" as *const u8
-                        as *const libc::c_char,
+                        as *const ::std::os::raw::c_char,
                 );
-                printf(b"\n\0" as *const u8 as *const libc::c_char);
+                printf(b"\n\0" as *const u8 as *const ::std::os::raw::c_char);
                 return OSQP_NULL as c_float;
             }
             ptr += 1;

@@ -1,12 +1,11 @@
-use ::libc;
-pub type QDLDL_int = libc::c_longlong;
-pub type QDLDL_float = libc::c_double;
-pub type QDLDL_bool = libc::c_uchar;
-pub const LLONG_MAX: libc::c_longlong = 0x7fffffffffffffff as libc::c_longlong;
-pub const QDLDL_INT_MAX: libc::c_longlong = LLONG_MAX;
-pub const QDLDL_UNKNOWN: libc::c_int = -(1 as libc::c_int);
-pub const QDLDL_USED: libc::c_int = 1 as libc::c_int;
-pub const QDLDL_UNUSED: libc::c_int = 0 as libc::c_int;
+pub type QDLDL_int = ::std::os::raw::c_longlong;
+pub type QDLDL_float = ::std::os::raw::c_double;
+pub type QDLDL_bool = ::std::os::raw::c_uchar;
+pub const LLONG_MAX: ::std::os::raw::c_longlong = 0x7fffffffffffffff as ::std::os::raw::c_longlong;
+pub const QDLDL_INT_MAX: ::std::os::raw::c_longlong = LLONG_MAX;
+pub const QDLDL_UNKNOWN: ::std::os::raw::c_int = -(1 as ::std::os::raw::c_int);
+pub const QDLDL_USED: ::std::os::raw::c_int = 1 as ::std::os::raw::c_int;
+pub const QDLDL_UNUSED: ::std::os::raw::c_int = 0 as ::std::os::raw::c_int;
 #[no_mangle]
 pub unsafe extern "C" fn QDLDL_etree(
     n: QDLDL_int,
@@ -20,29 +19,29 @@ pub unsafe extern "C" fn QDLDL_etree(
     let mut i: QDLDL_int = 0;
     let mut j: QDLDL_int = 0;
     let mut p: QDLDL_int = 0;
-    i = 0 as libc::c_int as QDLDL_int;
+    i = 0 as ::std::os::raw::c_int as QDLDL_int;
     while i < n {
-        *work.offset(i as isize) = 0 as libc::c_int as QDLDL_int;
-        *Lnz.offset(i as isize) = 0 as libc::c_int as QDLDL_int;
+        *work.offset(i as isize) = 0 as ::std::os::raw::c_int as QDLDL_int;
+        *Lnz.offset(i as isize) = 0 as ::std::os::raw::c_int as QDLDL_int;
         *etree.offset(i as isize) = QDLDL_UNKNOWN as QDLDL_int;
         if *Ap.offset(i as isize)
-            == *Ap.offset((i + 1 as libc::c_int as libc::c_longlong) as isize)
+            == *Ap.offset((i + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize)
         {
-            return -(1 as libc::c_int) as QDLDL_int;
+            return -(1 as ::std::os::raw::c_int) as QDLDL_int;
         }
         i += 1;
     }
-    j = 0 as libc::c_int as QDLDL_int;
+    j = 0 as ::std::os::raw::c_int as QDLDL_int;
     while j < n {
         *work.offset(j as isize) = j;
         p = *Ap.offset(j as isize);
-        while p < *Ap.offset((j + 1 as libc::c_int as libc::c_longlong) as isize) {
+        while p < *Ap.offset((j + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize) {
             i = *Ai.offset(p as isize);
             if i > j {
-                return -(1 as libc::c_int) as QDLDL_int;
+                return -(1 as ::std::os::raw::c_int) as QDLDL_int;
             }
             while *work.offset(i as isize) != j {
-                if *etree.offset(i as isize) == QDLDL_UNKNOWN as libc::c_longlong {
+                if *etree.offset(i as isize) == QDLDL_UNKNOWN as ::std::os::raw::c_longlong {
                     *etree.offset(i as isize) = j;
                 }
                 let ref mut fresh0 = *Lnz.offset(i as isize);
@@ -54,11 +53,11 @@ pub unsafe extern "C" fn QDLDL_etree(
         }
         j += 1;
     }
-    sumLnz = 0 as libc::c_int as QDLDL_int;
-    i = 0 as libc::c_int as QDLDL_int;
+    sumLnz = 0 as ::std::os::raw::c_int as QDLDL_int;
+    i = 0 as ::std::os::raw::c_int as QDLDL_int;
     while i < n {
         if sumLnz > QDLDL_INT_MAX - *Lnz.offset(i as isize) {
-            sumLnz = -(2 as libc::c_int) as QDLDL_int;
+            sumLnz = -(2 as ::std::os::raw::c_int) as QDLDL_int;
             break;
         } else {
             sumLnz += *Lnz.offset(i as isize);
@@ -99,18 +98,18 @@ pub unsafe extern "C" fn QDLDL_factor(
     let mut yVals: *mut QDLDL_float = 0 as *mut QDLDL_float;
     let mut yVals_cidx: QDLDL_float = 0.;
     let mut yMarkers: *mut QDLDL_bool = 0 as *mut QDLDL_bool;
-    let mut positiveValuesInD: QDLDL_int = 0 as libc::c_int as QDLDL_int;
+    let mut positiveValuesInD: QDLDL_int = 0 as ::std::os::raw::c_int as QDLDL_int;
     yMarkers = bwork;
     yIdx = iwork;
     elimBuffer = iwork.offset(n as isize);
-    LNextSpaceInCol = iwork.offset((n * 2 as libc::c_int as libc::c_longlong) as isize);
+    LNextSpaceInCol = iwork.offset((n * 2 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize);
     yVals = fwork;
-    *Lp.offset(0 as libc::c_int as isize) = 0 as libc::c_int as QDLDL_int;
-    i = 0 as libc::c_int as QDLDL_int;
+    *Lp.offset(0 as ::std::os::raw::c_int as isize) = 0 as ::std::os::raw::c_int as QDLDL_int;
+    i = 0 as ::std::os::raw::c_int as QDLDL_int;
     while i < n {
         *Lp
             .offset(
-                (i + 1 as libc::c_int as libc::c_longlong) as isize,
+                (i + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize,
             ) = *Lp.offset(i as isize) + *Lnz.offset(i as isize);
         *yMarkers.offset(i as isize) = QDLDL_UNUSED as QDLDL_bool;
         *yVals.offset(i as isize) = 0.0f64;
@@ -118,21 +117,21 @@ pub unsafe extern "C" fn QDLDL_factor(
         *LNextSpaceInCol.offset(i as isize) = *Lp.offset(i as isize);
         i += 1;
     }
-    *D.offset(0 as libc::c_int as isize) = *Ax.offset(0 as libc::c_int as isize);
-    if *D.offset(0 as libc::c_int as isize) == 0.0f64 {
-        return -(1 as libc::c_int) as QDLDL_int;
+    *D.offset(0 as ::std::os::raw::c_int as isize) = *Ax.offset(0 as ::std::os::raw::c_int as isize);
+    if *D.offset(0 as ::std::os::raw::c_int as isize) == 0.0f64 {
+        return -(1 as ::std::os::raw::c_int) as QDLDL_int;
     }
-    if *D.offset(0 as libc::c_int as isize) > 0.0f64 {
+    if *D.offset(0 as ::std::os::raw::c_int as isize) > 0.0f64 {
         positiveValuesInD += 1;
     }
     *Dinv
         .offset(
-            0 as libc::c_int as isize,
-        ) = 1 as libc::c_int as libc::c_double / *D.offset(0 as libc::c_int as isize);
-    k = 1 as libc::c_int as QDLDL_int;
+            0 as ::std::os::raw::c_int as isize,
+        ) = 1 as ::std::os::raw::c_int as ::std::os::raw::c_double / *D.offset(0 as ::std::os::raw::c_int as isize);
+    k = 1 as ::std::os::raw::c_int as QDLDL_int;
     while k < n {
-        nnzY = 0 as libc::c_int as QDLDL_int;
-        tmpIdx = *Ap.offset((k + 1 as libc::c_int as libc::c_longlong) as isize);
+        nnzY = 0 as ::std::os::raw::c_int as QDLDL_int;
+        tmpIdx = *Ap.offset((k + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize);
         i = *Ap.offset(k as isize);
         while i < tmpIdx {
             bidx = *Ai.offset(i as isize);
@@ -141,13 +140,13 @@ pub unsafe extern "C" fn QDLDL_factor(
             } else {
                 *yVals.offset(bidx as isize) = *Ax.offset(i as isize);
                 nextIdx = bidx;
-                if *yMarkers.offset(nextIdx as isize) as libc::c_int == QDLDL_UNUSED {
+                if *yMarkers.offset(nextIdx as isize) as ::std::os::raw::c_int == QDLDL_UNUSED {
                     *yMarkers.offset(nextIdx as isize) = QDLDL_USED as QDLDL_bool;
-                    *elimBuffer.offset(0 as libc::c_int as isize) = nextIdx;
-                    nnzE = 1 as libc::c_int as QDLDL_int;
+                    *elimBuffer.offset(0 as ::std::os::raw::c_int as isize) = nextIdx;
+                    nnzE = 1 as ::std::os::raw::c_int as QDLDL_int;
                     nextIdx = *etree.offset(bidx as isize);
-                    while nextIdx != QDLDL_UNKNOWN as libc::c_longlong && nextIdx < k {
-                        if *yMarkers.offset(nextIdx as isize) as libc::c_int
+                    while nextIdx != QDLDL_UNKNOWN as ::std::os::raw::c_longlong && nextIdx < k {
+                        if *yMarkers.offset(nextIdx as isize) as ::std::os::raw::c_int
                             == QDLDL_USED
                         {
                             break;
@@ -168,8 +167,8 @@ pub unsafe extern "C" fn QDLDL_factor(
             }
             i += 1;
         }
-        i = nnzY - 1 as libc::c_int as libc::c_longlong;
-        while i >= 0 as libc::c_int as libc::c_longlong {
+        i = nnzY - 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong;
+        while i >= 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
             cidx = *yIdx.offset(i as isize);
             tmpIdx = *LNextSpaceInCol.offset(cidx as isize);
             yVals_cidx = *yVals.offset(cidx as isize);
@@ -190,7 +189,7 @@ pub unsafe extern "C" fn QDLDL_factor(
             i -= 1;
         }
         if *D.offset(k as isize) == 0.0f64 {
-            return -(1 as libc::c_int) as QDLDL_int;
+            return -(1 as ::std::os::raw::c_int) as QDLDL_int;
         }
         if *D.offset(k as isize) > 0.0f64 {
             positiveValuesInD += 1;
@@ -198,7 +197,7 @@ pub unsafe extern "C" fn QDLDL_factor(
         *Dinv
             .offset(
                 k as isize,
-            ) = 1 as libc::c_int as libc::c_double / *D.offset(k as isize);
+            ) = 1 as ::std::os::raw::c_int as ::std::os::raw::c_double / *D.offset(k as isize);
         k += 1;
     }
     return positiveValuesInD;
@@ -213,11 +212,11 @@ pub unsafe extern "C" fn QDLDL_Lsolve(
 ) {
     let mut i: QDLDL_int = 0;
     let mut j: QDLDL_int = 0;
-    i = 0 as libc::c_int as QDLDL_int;
+    i = 0 as ::std::os::raw::c_int as QDLDL_int;
     while i < n {
         let mut val: QDLDL_float = *x.offset(i as isize);
         j = *Lp.offset(i as isize);
-        while j < *Lp.offset((i + 1 as libc::c_int as libc::c_longlong) as isize) {
+        while j < *Lp.offset((i + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize) {
             let ref mut fresh5 = *x.offset(*Li.offset(j as isize) as isize);
             *fresh5 -= *Lx.offset(j as isize) * val;
             j += 1;
@@ -235,11 +234,11 @@ pub unsafe extern "C" fn QDLDL_Ltsolve(
 ) {
     let mut i: QDLDL_int = 0;
     let mut j: QDLDL_int = 0;
-    i = n - 1 as libc::c_int as libc::c_longlong;
-    while i >= 0 as libc::c_int as libc::c_longlong {
+    i = n - 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong;
+    while i >= 0 as ::std::os::raw::c_int as ::std::os::raw::c_longlong {
         let mut val: QDLDL_float = *x.offset(i as isize);
         j = *Lp.offset(i as isize);
-        while j < *Lp.offset((i + 1 as libc::c_int as libc::c_longlong) as isize) {
+        while j < *Lp.offset((i + 1 as ::std::os::raw::c_int as ::std::os::raw::c_longlong) as isize) {
             val -= *Lx.offset(j as isize) * *x.offset(*Li.offset(j as isize) as isize);
             j += 1;
         }
@@ -258,7 +257,7 @@ pub unsafe extern "C" fn QDLDL_solve(
 ) {
     let mut i: QDLDL_int = 0;
     QDLDL_Lsolve(n, Lp, Li, Lx, x);
-    i = 0 as libc::c_int as QDLDL_int;
+    i = 0 as ::std::os::raw::c_int as QDLDL_int;
     while i < n {
         let ref mut fresh6 = *x.offset(i as isize);
         *fresh6 *= *Dinv.offset(i as isize);
