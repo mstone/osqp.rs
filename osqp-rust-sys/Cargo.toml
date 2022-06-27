@@ -11,9 +11,9 @@ name = "osqp_rust_sys"
 path = "lib.rs"
 crate-type = ["staticlib", "rlib"]
 [[bin]]
-path = "src/examples/osqp_demo.rs"
+path = "src64/examples/osqp_demo.rs"
 name = "osqp_demo"
 [[bin]]
-path = "src/lin_sys/direct/qdldl/qdldl_sources/examples/example.rs"
+path = "src64/lin_sys/direct/qdldl/qdldl_sources/examples/example.rs"
 name = "example"
 [dependencies]

@@ -11,6 +11,8 @@
 #![register_tool(c2rust)]
 
 
+#[cfg_attr(target_pointer_width="32", path="src32")]
+#[cfg_attr(target_pointer_width="64", path="src64")]
 pub mod src {
 pub mod lin_sys {
 pub mod direct {
