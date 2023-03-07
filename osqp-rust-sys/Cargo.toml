@@ -1,8 +1,9 @@
 [package]
 name = "osqp-rust-sys"
+description = "c2rust(osqp-sys)"
+license = "Apache-2.0"
 authors = ["Michael Stone <michael.r.stone@gmail.com>"]
 version = "0.6.2"
-publish = false
 edition = "2021"
 autobins = false
 
